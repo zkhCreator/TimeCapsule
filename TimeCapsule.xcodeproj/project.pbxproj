@@ -14,7 +14,20 @@
 		E896DF8E20478E48004025F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E896DF8D20478E48004025F4 /* Assets.xcassets */; };
 		E896DF9120478E48004025F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E896DF8F20478E48004025F4 /* LaunchScreen.storyboard */; };
 		E896DF9A20479034004025F4 /* TCTimeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896DF9920479034004025F4 /* TCTimeListViewController.swift */; };
+		E8A94AAE2052D85A0091C300 /* TCTimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AAD2052D85A0091C300 /* TCTimeAdapter.swift */; };
+		E8A94AB62052DECF0091C300 /* TimeCapsuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AB52052DECF0091C300 /* TimeCapsuleTests.swift */; };
+		E8A94ABF2052DF7D0091C300 /* TCTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E8A94AB82052DECF0091C300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E896DF7B20478E48004025F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E896DF8220478E48004025F4;
+			remoteInfo = TimeCapsule;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		164E576BE0FDD676211F89F2 /* Pods-TimeCapsule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimeCapsule.release.xcconfig"; path = "Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule.release.xcconfig"; sourceTree = "<group>"; };
@@ -28,6 +41,11 @@
 		E896DF9020478E48004025F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E896DF9220478E48004025F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E896DF9920479034004025F4 /* TCTimeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListViewController.swift; sourceTree = "<group>"; };
+		E8A94AAD2052D85A0091C300 /* TCTimeAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeAdapter.swift; sourceTree = "<group>"; };
+		E8A94AB32052DECF0091C300 /* TimeCapsuleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeCapsuleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8A94AB52052DECF0091C300 /* TimeCapsuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCapsuleTests.swift; sourceTree = "<group>"; };
+		E8A94AB72052DECF0091C300 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +54,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACE03F40A85C5F3D495DE456 /* Pods_TimeCapsule.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8A94AB02052DECF0091C300 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				E896DF8520478E48004025F4 /* TimeCapsule */,
+				E8A94AB42052DECF0091C300 /* TimeCapsuleTests */,
 				E896DF8420478E48004025F4 /* Products */,
 				0CEB7CAAB3AB32AF0BCD7577 /* Pods */,
 				F1A73220C21A93357349DE25 /* Frameworks */,
@@ -65,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				E896DF8320478E48004025F4 /* TimeCapsule.app */,
+				E8A94AB32052DECF0091C300 /* TimeCapsuleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +99,8 @@
 		E896DF8520478E48004025F4 /* TimeCapsule */ = {
 			isa = PBXGroup;
 			children = (
+				E8A94ABD2052DF600091C300 /* Models */,
+				E8A94AAA2052D7EB0091C300 /* Tools */,
 				E896DF9820478F8F004025F4 /* TimeList */,
 				E896DF8620478E48004025F4 /* AppDelegate.swift */,
 				E896DF8820478E48004025F4 /* ViewController.swift */,
@@ -89,6 +118,31 @@
 				E896DF9920479034004025F4 /* TCTimeListViewController.swift */,
 			);
 			path = TimeList;
+			sourceTree = "<group>";
+		};
+		E8A94AAA2052D7EB0091C300 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				E8A94AAD2052D85A0091C300 /* TCTimeAdapter.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		E8A94AB42052DECF0091C300 /* TimeCapsuleTests */ = {
+			isa = PBXGroup;
+			children = (
+				E8A94AB52052DECF0091C300 /* TimeCapsuleTests.swift */,
+				E8A94AB72052DECF0091C300 /* Info.plist */,
+			);
+			path = TimeCapsuleTests;
+			sourceTree = "<group>";
+		};
+		E8A94ABD2052DF600091C300 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F1A73220C21A93357349DE25 /* Frameworks */ = {
@@ -122,6 +176,24 @@
 			productReference = E896DF8320478E48004025F4 /* TimeCapsule.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E8A94AB22052DECF0091C300 /* TimeCapsuleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E8A94ABA2052DECF0091C300 /* Build configuration list for PBXNativeTarget "TimeCapsuleTests" */;
+			buildPhases = (
+				E8A94AAF2052DECF0091C300 /* Sources */,
+				E8A94AB02052DECF0091C300 /* Frameworks */,
+				E8A94AB12052DECF0091C300 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E8A94AB92052DECF0091C300 /* PBXTargetDependency */,
+			);
+			name = TimeCapsuleTests;
+			productName = TimeCapsuleTests;
+			productReference = E8A94AB32052DECF0091C300 /* TimeCapsuleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -136,6 +208,11 @@
 					E896DF8220478E48004025F4 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+					};
+					E8A94AB22052DECF0091C300 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E896DF8220478E48004025F4;
 					};
 				};
 			};
@@ -153,6 +230,7 @@
 			projectRoot = "";
 			targets = (
 				E896DF8220478E48004025F4 /* TimeCapsule */,
+				E8A94AB22052DECF0091C300 /* TimeCapsuleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -165,6 +243,13 @@
 				E896DF9120478E48004025F4 /* LaunchScreen.storyboard in Resources */,
 				E896DF8E20478E48004025F4 /* Assets.xcassets in Resources */,
 				E896DF8C20478E48004025F4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8A94AB12052DECF0091C300 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,13 +314,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8A94AAE2052D85A0091C300 /* TCTimeAdapter.swift in Sources */,
+				E8A94ABF2052DF7D0091C300 /* TCTimeManager.swift in Sources */,
 				E896DF8920478E48004025F4 /* ViewController.swift in Sources */,
 				E896DF9A20479034004025F4 /* TCTimeListViewController.swift in Sources */,
 				E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E8A94AAF2052DECF0091C300 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E8A94AB62052DECF0091C300 /* TimeCapsuleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E8A94AB92052DECF0091C300 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E896DF8220478E48004025F4 /* TimeCapsule */;
+			targetProxy = E8A94AB82052DECF0091C300 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E896DF8A20478E48004025F4 /* Main.storyboard */ = {
@@ -396,6 +499,38 @@
 			};
 			name = Release;
 		};
+		E8A94ABB2052DECF0091C300 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2322UT7HH9;
+				INFOPLIST_FILE = TimeCapsuleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = zkhCreator.TimeCapsuleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeCapsule.app/TimeCapsule";
+			};
+			name = Debug;
+		};
+		E8A94ABC2052DECF0091C300 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2322UT7HH9;
+				INFOPLIST_FILE = TimeCapsuleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = zkhCreator.TimeCapsuleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TimeCapsule.app/TimeCapsule";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -413,6 +548,15 @@
 			buildConfigurations = (
 				E896DF9620478E48004025F4 /* Debug */,
 				E896DF9720478E48004025F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E8A94ABA2052DECF0091C300 /* Build configuration list for PBXNativeTarget "TimeCapsuleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E8A94ABB2052DECF0091C300 /* Debug */,
+				E8A94ABC2052DECF0091C300 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
