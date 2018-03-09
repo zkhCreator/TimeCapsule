@@ -106,7 +106,7 @@ class TCTimeManager: NSObject {
     
     init(with date:Date = Date()) {
         self.date = date
-        self.comp = Calendar.current.dateComponents([.year, .month, .hour, .minute, .second, timezone], from: date)
+        self.comp = Calendar.current.dateComponents([.year, .month, .hour, .minute, .second, .timeZone], from: date)
         super.init()
     }
     
