@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ACE03F40A85C5F3D495DE456 /* Pods_TimeCapsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */; };
 		E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896DF8620478E48004025F4 /* AppDelegate.swift */; };
 		E896DF8920478E48004025F4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896DF8820478E48004025F4 /* ViewController.swift */; };
 		E896DF8C20478E48004025F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E896DF8A20478E48004025F4 /* Main.storyboard */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		164E576BE0FDD676211F89F2 /* Pods-TimeCapsule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimeCapsule.release.xcconfig"; path = "Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule.release.xcconfig"; sourceTree = "<group>"; };
+		257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TimeCapsule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA388F0B4B11DFC214586FCF /* Pods-TimeCapsule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimeCapsule.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule.debug.xcconfig"; sourceTree = "<group>"; };
 		E896DF8320478E48004025F4 /* TimeCapsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeCapsule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E896DF8620478E48004025F4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E896DF8820478E48004025F4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,17 +35,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACE03F40A85C5F3D495DE456 /* Pods_TimeCapsule.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CEB7CAAB3AB32AF0BCD7577 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DA388F0B4B11DFC214586FCF /* Pods-TimeCapsule.debug.xcconfig */,
+				164E576BE0FDD676211F89F2 /* Pods-TimeCapsule.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E896DF7A20478E48004025F4 = {
 			isa = PBXGroup;
 			children = (
 				E896DF8520478E48004025F4 /* TimeCapsule */,
 				E896DF8420478E48004025F4 /* Products */,
+				0CEB7CAAB3AB32AF0BCD7577 /* Pods */,
+				F1A73220C21A93357349DE25 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +91,14 @@
 			path = TimeList;
 			sourceTree = "<group>";
 		};
+		F1A73220C21A93357349DE25 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -82,9 +106,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E896DF9520478E48004025F4 /* Build configuration list for PBXNativeTarget "TimeCapsule" */;
 			buildPhases = (
+				9807E9A96A35558F2E65A77B /* [CP] Check Pods Manifest.lock */,
 				E896DF7F20478E48004025F4 /* Sources */,
 				E896DF8020478E48004025F4 /* Frameworks */,
 				E896DF8120478E48004025F4 /* Resources */,
+				F5963C06E105046529B6B92A /* [CP] Embed Pods Frameworks */,
+				FFC5C6AC655CD497DA56DEED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -142,6 +169,60 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9807E9A96A35558F2E65A77B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TimeCapsule-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5963C06E105046529B6B92A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FFC5C6AC655CD497DA56DEED /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E896DF7F20478E48004025F4 /* Sources */ = {
@@ -285,6 +366,7 @@
 		};
 		E896DF9620478E48004025F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA388F0B4B11DFC214586FCF /* Pods-TimeCapsule.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +382,7 @@
 		};
 		E896DF9720478E48004025F4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 164E576BE0FDD676211F89F2 /* Pods-TimeCapsule.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
