@@ -20,22 +20,23 @@ class TCTimeManager: NSObject {
                 return
             }
             date = newDate
+            comp = Calendar.current.dateComponents([.year, .month, .hour, .minute, .second, .timeZone], from: date)
         }
         get {
             return TCTimeAdapter.convert(to: .year, date: date)
         }
     }
     
-    var month:Int {
+    var month:TCMonth {
         set {
-            comp.month = newValue
+            comp.month = newValue.rawValue
             guard let newDate = Calendar.current.date(from: comp) else {
                 return
             }
             date = newDate
         }
         get {
-            return TCTimeAdapter.convert(to: .month, date: date)
+            return TCTimeAdapter.convertMonth(with: date)
         }
     }
     

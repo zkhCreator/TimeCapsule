@@ -17,6 +17,13 @@
 		E8A94AAE2052D85A0091C300 /* TCTimeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AAD2052D85A0091C300 /* TCTimeAdapter.swift */; };
 		E8A94AB62052DECF0091C300 /* TimeCapsuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AB52052DECF0091C300 /* TimeCapsuleTests.swift */; };
 		E8A94ABF2052DF7D0091C300 /* TCTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */; };
+		E8A94AC120538EFF0091C300 /* TCTimeEventEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AC020538EFF0091C300 /* TCTimeEventEditViewController.swift */; };
+		E8A94AC320538F290091C300 /* TCBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AC220538F290091C300 /* TCBasicViewController.swift */; };
+		E8A94AC520538F6B0091C300 /* TCBasicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AC420538F6B0091C300 /* TCBasicNavigationController.swift */; };
+		E8A94AC820538FCA0091C300 /* TCEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AC720538FCA0091C300 /* TCEventView.swift */; };
+		E8A94ACA2053B8620091C300 /* TCEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AC92053B8620091C300 /* TCEventModel.swift */; };
+		E8A94ACC2053BB860091C300 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94ACB2053BB860091C300 /* extension.swift */; };
+		E8A94ACE2053BE2A0091C300 /* TCEventShowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94ACD2053BE2A0091C300 /* TCEventShowModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +53,13 @@
 		E8A94AB52052DECF0091C300 /* TimeCapsuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCapsuleTests.swift; sourceTree = "<group>"; };
 		E8A94AB72052DECF0091C300 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeManager.swift; sourceTree = "<group>"; };
+		E8A94AC020538EFF0091C300 /* TCTimeEventEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeEventEditViewController.swift; sourceTree = "<group>"; };
+		E8A94AC220538F290091C300 /* TCBasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCBasicViewController.swift; sourceTree = "<group>"; };
+		E8A94AC420538F6B0091C300 /* TCBasicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCBasicNavigationController.swift; sourceTree = "<group>"; };
+		E8A94AC720538FCA0091C300 /* TCEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCEventView.swift; sourceTree = "<group>"; };
+		E8A94AC92053B8620091C300 /* TCEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCEventModel.swift; sourceTree = "<group>"; };
+		E8A94ACB2053BB860091C300 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
+		E8A94ACD2053BE2A0091C300 /* TCEventShowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCEventShowModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +113,7 @@
 		E896DF8520478E48004025F4 /* TimeCapsule */ = {
 			isa = PBXGroup;
 			children = (
+				E8A94AC620538F7E0091C300 /* Views */,
 				E8A94ABD2052DF600091C300 /* Models */,
 				E8A94AAA2052D7EB0091C300 /* Tools */,
 				E896DF9820478F8F004025F4 /* TimeList */,
@@ -116,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				E896DF9920479034004025F4 /* TCTimeListViewController.swift */,
+				E8A94AC020538EFF0091C300 /* TCTimeEventEditViewController.swift */,
 			);
 			path = TimeList;
 			sourceTree = "<group>";
@@ -124,6 +140,9 @@
 			isa = PBXGroup;
 			children = (
 				E8A94AAD2052D85A0091C300 /* TCTimeAdapter.swift */,
+				E8A94AC220538F290091C300 /* TCBasicViewController.swift */,
+				E8A94AC420538F6B0091C300 /* TCBasicNavigationController.swift */,
+				E8A94ACB2053BB860091C300 /* extension.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -141,8 +160,18 @@
 			isa = PBXGroup;
 			children = (
 				E8A94ABE2052DF7D0091C300 /* TCTimeManager.swift */,
+				E8A94AC92053B8620091C300 /* TCEventModel.swift */,
+				E8A94ACD2053BE2A0091C300 /* TCEventShowModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E8A94AC620538F7E0091C300 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E8A94AC720538FCA0091C300 /* TCEventView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F1A73220C21A93357349DE25 /* Frameworks */ = {
@@ -315,8 +344,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8A94AAE2052D85A0091C300 /* TCTimeAdapter.swift in Sources */,
+				E8A94AC820538FCA0091C300 /* TCEventView.swift in Sources */,
+				E8A94AC120538EFF0091C300 /* TCTimeEventEditViewController.swift in Sources */,
+				E8A94ACA2053B8620091C300 /* TCEventModel.swift in Sources */,
+				E8A94ACE2053BE2A0091C300 /* TCEventShowModel.swift in Sources */,
 				E8A94ABF2052DF7D0091C300 /* TCTimeManager.swift in Sources */,
+				E8A94AC520538F6B0091C300 /* TCBasicNavigationController.swift in Sources */,
 				E896DF8920478E48004025F4 /* ViewController.swift in Sources */,
+				E8A94ACC2053BB860091C300 /* extension.swift in Sources */,
+				E8A94AC320538F290091C300 /* TCBasicViewController.swift in Sources */,
 				E896DF9A20479034004025F4 /* TCTimeListViewController.swift in Sources */,
 				E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */,
 			);

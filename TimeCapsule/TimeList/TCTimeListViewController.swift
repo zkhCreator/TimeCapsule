@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TCTimeListViewController: UIViewController {
+class TCTimeListViewController: TCBasicViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 

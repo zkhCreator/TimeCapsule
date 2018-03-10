@@ -18,6 +18,21 @@ enum TCWeekday:Int {
     case Sunday = 1
 }
 
+enum TCMonth:Int {
+    case January = 1
+    case February = 2
+    case March = 3
+    case April = 4
+    case May = 5
+    case June = 6
+    case July = 7
+    case August = 8
+    case September = 9
+    case October = 10
+    case November = 11
+    case December = 12
+}
+
 enum TCDateOption {
     case year
     case month
@@ -32,6 +47,12 @@ class TCTimeAdapter: NSObject {
         let dayNum = convert(component:.weekday, date: date)
         let weekday = TCWeekday.init(rawValue: dayNum)
         return weekday!
+    }
+    
+    static func convertMonth(with date:Date) -> TCMonth {
+        let month = convert(component: .month, date: date)
+        let monthName = TCMonth.init(rawValue: month)
+        return monthName!
     }
     
     static func convert(to type:TCDateOption, date:Date) -> Int {
