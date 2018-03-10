@@ -12,6 +12,7 @@ class TCTimeEventEditViewController: TCBasicViewController {
 
     var eventView = TCEventView.init(frame: CGRect.zero)
     let eventModel:TCEventShowModel
+    let tableview = UITableView.init(frame: CGRect.zero, style: .plain)
     
     init(with data:TCEventModel = TCEventModel()) {
         eventModel = TCEventShowModel.init(with: data)
