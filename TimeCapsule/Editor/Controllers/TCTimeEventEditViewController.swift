@@ -12,12 +12,13 @@ class TCTimeEventEditViewController: TCBasicViewController {
 
     var eventView = TCEventView.init(frame: CGRect.zero)
     let eventModel:TCEventShowModel
-    let tableview = UITableView.init(frame: CGRect.zero, style: .plain)
+    let contentView = UITableView.init(frame: CGRect.zero, style: .plain)
+    let calenderPickerView:TCCalenderPickerView
     
     init(with data:TCEventModel = TCEventModel()) {
         eventModel = TCEventShowModel.init(with: data)
+        calenderPickerView = TCCalenderPickerView.init(with: eventModel)
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,11 +27,28 @@ class TCTimeEventEditViewController: TCBasicViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupView()
+        self.updateDate()
+    }
+    
+    func setupView() {
+        view.addSubview(eventView)
+        view.addSubview(contentView)
+        view.addSubview(calenderPickerView)
         
         view.backgroundColor = UIColor.white
-        view.addSubview(eventView)
         eventView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 170)
         eventView.backgroundColor = UIColor.red
+        
+        let eventViewOffsetY = eventView.frame.origin.y + eventView.frame.height
+        contentView.frame = CGRect(x: 0, y: eventViewOffsetY, width: view.bounds.width, height: view.bounds.height - eventViewOffsetY)
+        contentView.backgroundColor = UIColor.green
+        
+        calenderPickerView.frame = contentView.frame
+        
+    }
+    
+    func updateDate() {
         eventView.updateView(with: eventModel)
     }
 }

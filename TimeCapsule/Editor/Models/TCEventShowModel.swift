@@ -19,35 +19,13 @@ class TCEventShowModel: NSObject {
     
     var monthString:String {
         get {
-            var month:String = ""
-            switch manager.month {
-            case .January:
-                month = "Jan."
-            case .February:
-                month = "Feb."
-            case .March:
-                month = "Mar."
-            case .April:
-                month = "Apr."
-            case .May:
-                month = "May."
-            case .June:
-                month = "Jun."
-            case .July:
-                month = "Jul."
-            case .August:
-                month = "Aug."
-            case .September:
-                month = "Sep."
-            case .October:
-                month = "Oct."
-            case .November:
-                month = "Nov."
-            case .December:
-                month = "Dec."
-            }
-            
-            return month
+            return TCTimeAdapter.showMonthOmissionName(monthEnum: manager.month)
+        }
+    }
+    
+    var monthFullString:String {
+        get {
+            return TCTimeAdapter.showMonthFullName(monthEnum: manager.month)
         }
     }
     

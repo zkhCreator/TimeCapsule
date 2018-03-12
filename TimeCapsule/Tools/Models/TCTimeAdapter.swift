@@ -78,4 +78,82 @@ class TCTimeAdapter: NSObject {
         let time = Calendar.current.component(component, from: date)
         return time
     }
+    
+    static func showMonthOmissionName(monthEnum:TCMonth) -> String {
+        var month:String = ""
+        switch monthEnum {
+        case .January:
+            month = "Jan."
+        case .February:
+            month = "Feb."
+        case .March:
+            month = "Mar."
+        case .April:
+            month = "Apr."
+        case .May:
+            month = "May."
+        case .June:
+            month = "Jun."
+        case .July:
+            month = "Jul."
+        case .August:
+            month = "Aug."
+        case .September:
+            month = "Sep."
+        case .October:
+            month = "Oct."
+        case .November:
+            month = "Nov."
+        case .December:
+            month = "Dec."
+        }
+        return month
+    }
+    
+    static func showMonthFullName(monthEnum:TCMonth) -> String {
+        var month:String = ""
+        switch monthEnum {
+        case .January:
+            month = "January"
+        case .February:
+            month = "February"
+        case .March:
+            month = "March"
+        case .April:
+            month = "April"
+        case .May:
+            month = "May"
+        case .June:
+            month = "June"
+        case .July:
+            month = "July"
+        case .August:
+            month = "August"
+        case .September:
+            month = "September"
+        case .October:
+            month = "October"
+        case .November:
+            month = "November"
+        case .December:
+            month = "December"
+        }
+        return month
+    }
+    
+    static func showWeekFullName() -> [String] {
+        return ["Monday", "Tuesday", "WednesDay", "Thursday", "Friday", "Saturday", "Sunday"]
+    }
+    
+    static func showWeekOmissionName() -> [String] {
+        return ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."]
+    }
+    
+    static func showSunFirstWeekFullName() -> [String] {
+        return ["Sunday", "Monday", "Tuesday", "WednesDay", "Thursday", "Friday", "Saturday"]
+    }
+    
+    static func showSunFirstWeekOmissionName() -> [String] {
+        return ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."]
+    }
 }
