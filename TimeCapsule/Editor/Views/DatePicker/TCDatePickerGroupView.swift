@@ -44,7 +44,7 @@ class TCDatePickerGroupView: UIView {
         firstDayWeekday = showModel.manager.firstDayWeekDay
         
         for (index, label) in buttonArray.enumerated() {
-            if index < showModel.manager.currentMonthDay {
+            if index < showModel.manager.date.monthDay() {
                 label.alpha = 1
             } else {
                 label.alpha = 0;

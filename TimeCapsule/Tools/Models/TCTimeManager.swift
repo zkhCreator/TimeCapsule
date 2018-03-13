@@ -112,32 +112,6 @@ struct TCTimeManager {
         }
     }
     
-    var currentMonthDay:Int {
-        get {
-            switch month {
-            case .February:
-                return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28
-            default:
-                return monthDayArray[month.rawValue - 1]
-            }
-        }
-    }
-    
-    var lastMonthDay:Int {
-        // 获得上一个月份的月份
-        var lastMonthValue = month.rawValue - 1
-        // 防止年份越界
-        if lastMonthValue <= 0 {
-            lastMonthValue = lastMonthValue + 1
-        }
-        // 如果上一个月份为 2 单独判断
-        if lastMonthValue == 2 {
-            return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28
-        }
-        
-        return monthDayArray[month.rawValue - 1]
-    }
-    
     var firstDayWeekDay:TCWeekday {
         get {
             let firstDayDate = Date.getBegin(year: self.year, of: self.month.rawValue, timeZone: self.comp.timeZone!)

@@ -14,6 +14,8 @@ class TCCalenderPickerView: UIView {
     var currentShowModel:TCEventShowModel
     
     let monthPickerView:TCMonthPickerView = TCMonthPickerView.init(frame: .zero)
+    var weekdayArray = [UILabel]()
+    
     var currentDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
     var nextDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
     
@@ -26,7 +28,17 @@ class TCCalenderPickerView: UIView {
         addSubview(monthPickerView)
         addSubview(currentDatePickerView)
         addSubview(nextDatePickerView)
+        nextDatePickerView.alpha = 0
         self.backgroundColor = UIColor.white
+        
+        // 顶部静止的 weekday
+        for dayTitle in TCTimeAdapter.showSunFirstWeekOmissionName() {
+            let label = UILabel.init()
+            label.textAlignment = .center
+            label.text = dayTitle
+            addSubview(label)
+            weekdayArray.append(label)
+        }
         
         monthPickerView.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel)  in
             if status == .previous {
@@ -48,6 +60,7 @@ class TCCalenderPickerView: UIView {
     
     func update(with showModel:TCEventShowModel) {
         monthPickerView.updateCurrentLabel(model: showModel)
+        currentDatePickerView.select(date: showModel.manager.day)
         currentDatePickerView.update(with: showModel)
     }
     
@@ -65,12 +78,20 @@ class TCCalenderPickerView: UIView {
         
         nextDatePickerView.frame = nextMoveFromFrame
         nextDatePickerView.update(with: self.currentShowModel)
+        nextDatePickerView.alpha = 0
+        
+        if self.currentShowModel.monthString == self.initShowModel.monthString {
+            nextDatePickerView.select(date: self.initShowModel.manager.day)
+        }
         
         UIView.animate(withDuration: 0.3, animations: {
             self.nextDatePickerView.frame = nextMoveToFrame
             self.currentDatePickerView.frame = currentViewMoveToFrame
+            self.nextDatePickerView.alpha = 1
+            self.currentDatePickerView.alpha = 0
         }) { (finished) in
             if finished {
+                self.currentDatePickerView.clear()
                 let tempPickerView = self.nextDatePickerView
                 self.nextDatePickerView = self.currentDatePickerView
                 self.currentDatePickerView = tempPickerView
@@ -81,10 +102,22 @@ class TCCalenderPickerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         monthPickerView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 30)
+        
+        let offsetX:CGFloat = 16
+        let viewWidth = self.bounds.size.width - offsetX * 2
+        
+        for (index, label) in weekdayArray.enumerated() {
+            label.frame = CGRect.init(x: CGFloat(index) * viewWidth / CGFloat(weekdayArray.count) + offsetX,
+                                      y: self.monthPickerView.bounds.size.height,
+                                      width: (viewWidth) / CGFloat(weekdayArray.count),
+                                      height: 16)
+        }
+        
         if canUpdatePickerView {
             canUpdatePickerView = false
-            currentDatePickerView.frame = CGRect(x: 0, y: monthPickerView.frame.height, width: self.bounds.size.width, height: self.bounds.size.height - monthPickerView.frame.height)
+            currentDatePickerView.frame = self.createNewFrame(with: .middle)
         }
+        
         
     }
     
@@ -100,6 +133,9 @@ class TCCalenderPickerView: UIView {
             
         }
         
-        return CGRect(x: offsetX, y: monthPickerView.frame.height, width: self.bounds.size.width, height: self.bounds.size.height - monthPickerView.frame.height)
+        return CGRect(x: offsetX,
+                      y: weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height + 16,
+                      width: self.bounds.size.width,
+                      height: self.bounds.size.height - monthPickerView.frame.height - weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height - 16)
     }
 }
