@@ -13,7 +13,7 @@ enum TCMonthClickStatus {
     case next
 }
 
-enum TCMonthButtonPosition {
+enum TCCustomViewPosition {
     case left
     case middle
     case right

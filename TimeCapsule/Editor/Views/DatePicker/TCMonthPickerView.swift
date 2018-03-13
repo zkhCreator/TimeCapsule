@@ -107,8 +107,8 @@ class TCMonthPickerView: UIView {
     
     // MARK:Animation
     func startAnimate(clickStatus:TCMonthClickStatus) {
-        let currentLabelMissFrame = clickStatus == .previous ? createFrame(with: .left, view: currentLabel) : createFrame(with: .right, view: currentLabel)
-        let nextLabelFrame = clickStatus == .previous ? createFrame(with: .right, view: nextLabel) : createFrame(with: .left, view: nextLabel)
+        let currentLabelMissFrame = clickStatus == .next ? createFrame(with: .left, view: currentLabel) : createFrame(with: .right, view: currentLabel)
+        let nextLabelFrame = clickStatus == .next ? createFrame(with: .right, view: nextLabel) : createFrame(with: .left, view: nextLabel)
         let nextLabelMissFrame = createFrame(with: .middle, view: nextLabel)
         self.nextLabel.frame = nextLabelFrame
         
@@ -161,7 +161,7 @@ class TCMonthPickerView: UIView {
         return tempLabel
     }
     
-    func createFrame(with position:TCMonthButtonPosition, view:UIView) -> CGRect{
+    func createFrame(with position:TCCustomViewPosition, view:UIView) -> CGRect{
         var frame = CGRect.zero
         
         let height = self.bounds.height

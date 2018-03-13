@@ -43,13 +43,12 @@ class TCDatePickerView: UIView {
     
     func update(with showModel:TCEventShowModel) {
         self.dateGroupView.update(with: showModel)
+        self.dateGroupView.setNeedsLayout()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setupView()
-        self.dateGroupView.updateSelected(day: 12)
-        self.dateGroupView.clear()
     }
     
     required init?(coder aDecoder: NSCoder) {

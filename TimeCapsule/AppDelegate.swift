@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = TCTimeEventEditViewController()
         
         window?.makeKeyAndVisible()
-        
         return true
     }
 

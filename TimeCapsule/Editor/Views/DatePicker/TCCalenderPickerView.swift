@@ -14,23 +14,27 @@ class TCCalenderPickerView: UIView {
     var currentShowModel:TCEventShowModel
     
     let monthPickerView:TCMonthPickerView = TCMonthPickerView.init(frame: .zero)
-    let dataPickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
+    var currentDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
+    var nextDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
+    
+    var canUpdatePickerView:Bool = true
 
     override init(frame: CGRect) {
         initShowModel = TCEventShowModel()
         currentShowModel = TCEventShowModel()
         super.init(frame: frame)
         addSubview(monthPickerView)
-        addSubview(dataPickerView)
+        addSubview(currentDatePickerView)
+        addSubview(nextDatePickerView)
         self.backgroundColor = UIColor.white
         
-        monthPickerView.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel) in
+        monthPickerView.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel)  in
             if status == .previous {
-                self.currentShowModel.manager.date = Date.init(timeInterval: TimeInterval(-3600 * 24 * (self.currentShowModel.manager.currentMonthDay)) , since: (self.currentShowModel.manager.date))
+                self.currentShowModel.manager.date = self.currentShowModel.manager.date.previousMonth()
             } else {
-                self.currentShowModel.manager.date = Date.init(timeInterval: TimeInterval(3600 * 24 * (self.currentShowModel.manager.currentMonthDay)) , since: (self.currentShowModel.manager.date))
+                self.currentShowModel.manager.date = self.currentShowModel.manager.date.nextMonth()
             }
-            
+            self.startAnimate(with: status)
             return self.currentShowModel
         }
     }
@@ -44,17 +48,58 @@ class TCCalenderPickerView: UIView {
     
     func update(with showModel:TCEventShowModel) {
         monthPickerView.updateCurrentLabel(model: showModel)
-        dataPickerView.update(with: showModel)
+        currentDatePickerView.update(with: showModel)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func startAnimate(with status:TCMonthClickStatus) {
+        
+        let currentMoveDirection:TCCustomViewPosition = status == .next ? .left : .right
+        let currentViewMoveToFrame = createNewFrame(with: currentMoveDirection)
+        let nextMoveFromDirection:TCCustomViewPosition = status == .next ? .right : .left
+        let nextMoveFromFrame = createNewFrame(with: nextMoveFromDirection)
+        let nextMoveToFrame = createNewFrame(with: .middle)
+        
+        nextDatePickerView.frame = nextMoveFromFrame
+        nextDatePickerView.update(with: self.currentShowModel)
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.nextDatePickerView.frame = nextMoveToFrame
+            self.currentDatePickerView.frame = currentViewMoveToFrame
+        }) { (finished) in
+            if finished {
+                let tempPickerView = self.nextDatePickerView
+                self.nextDatePickerView = self.currentDatePickerView
+                self.currentDatePickerView = tempPickerView
+            }
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         monthPickerView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 30)
-        dataPickerView.frame = CGRect(x: 0, y: monthPickerView.frame.height, width: self.bounds.size.width, height: self.bounds.size.height - monthPickerView.frame.height)
+        if canUpdatePickerView {
+            canUpdatePickerView = false
+            currentDatePickerView.frame = CGRect(x: 0, y: monthPickerView.frame.height, width: self.bounds.size.width, height: self.bounds.size.height - monthPickerView.frame.height)
+        }
         
+    }
+    
+    func createNewFrame(with position:TCCustomViewPosition) -> CGRect {
+        var offsetX:CGFloat = 0
+        switch position {
+        case .left:
+            offsetX = -self.bounds.width
+        case .middle:
+            offsetX = 0
+        case .right:
+            offsetX = self.bounds.width
+            
+        }
+        
+        return CGRect(x: offsetX, y: monthPickerView.frame.height, width: self.bounds.size.width, height: self.bounds.size.height - monthPickerView.frame.height)
     }
 }
