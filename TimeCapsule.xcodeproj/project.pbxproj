@@ -28,7 +28,6 @@
 		E8A94AF5205408940091C300 /* TCMonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AF4205408940091C300 /* TCMonthPickerView.swift */; };
 		E8A94B1C205673300091C300 /* TCDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B1B205673300091C300 /* TCDatePickerView.swift */; };
 		E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B20205677000091C300 /* TCPickerDataTool.swift */; };
-		E8A94B3320569AE10091C300 /* TCDatePickerGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B3220569AE10091C300 /* TCDatePickerGroupView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +68,6 @@
 		E8A94AF4205408940091C300 /* TCMonthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCMonthPickerView.swift; sourceTree = "<group>"; };
 		E8A94B1B205673300091C300 /* TCDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDatePickerView.swift; sourceTree = "<group>"; };
 		E8A94B20205677000091C300 /* TCPickerDataTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerDataTool.swift; sourceTree = "<group>"; };
-		E8A94B3220569AE10091C300 /* TCDatePickerGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDatePickerGroupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +211,6 @@
 		E8A94AF8205582500091C300 /* DatePicker */ = {
 			isa = PBXGroup;
 			children = (
-				E8A94B3220569AE10091C300 /* TCDatePickerGroupView.swift */,
 				E8A94AF22054083E0091C300 /* TCCalenderPickerView.swift */,
 				E8A94AF4205408940091C300 /* TCMonthPickerView.swift */,
 				E8A94B1B205673300091C300 /* TCDatePickerView.swift */,
@@ -400,7 +397,6 @@
 			files = (
 				E8A94AED205405550091C300 /* TCEventView.swift in Sources */,
 				E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */,
-				E8A94B3320569AE10091C300 /* TCDatePickerGroupView.swift in Sources */,
 				E8A94AE7205405550091C300 /* TCTimeListViewController.swift in Sources */,
 				E8A94AEE205405550091C300 /* extension.swift in Sources */,
 				E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */,
