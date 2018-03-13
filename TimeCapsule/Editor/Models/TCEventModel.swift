@@ -25,6 +25,4 @@ class TCEventModel: NSObject {
         summary = ""
         status = .planed
     }
-    
-    
 }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class TCEventShowModel: NSObject {
+struct TCEventShowModel {
     
-    let manager:TCTimeManager
+    var manager:TCTimeManager
     var yearString:String {
         get {
             return manager.year.toString()
@@ -69,7 +69,7 @@ class TCEventShowModel: NSObject {
     var summaryString:String
     
     
-    init(with model:TCEventModel) {
+    init(with model:TCEventModel = TCEventModel()) {
         manager = TCTimeManager.init(with: model.time)
         summaryString = model.summary
     }

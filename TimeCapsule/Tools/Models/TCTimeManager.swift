@@ -8,7 +8,9 @@
 
 import UIKit
 
-class TCTimeManager: NSObject {
+let monthDayArray:[Int] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+struct TCTimeManager {
     var date:Date
     
     var comp = DateComponents()
@@ -105,13 +107,30 @@ class TCTimeManager: NSObject {
         }
     }
     
+    var currentMonthDay:Int {
+        get {
+            switch month {
+            case .February:
+                return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 29 : 28
+            default:
+                return monthDayArray[month.rawValue - 1]
+            }
+        }
+    }
+    
+    var firstDayWeekDay:TCWeekday {
+        get {
+            let firstDay = self.day % 7
+            var currentWeekValue = self.week.rawValue - (firstDay - 1)
+            if currentWeekValue < 1 {
+                currentWeekValue = currentWeekValue + 7
+            }
+            return TCWeekday(rawValue: currentWeekValue)!
+        }
+    }
+    
     init(with date:Date = Date()) {
         self.date = date
         self.comp = Calendar.current.dateComponents([.year, .month, .hour, .minute, .second, .timeZone], from: date)
-        super.init()
-    }
-    
-    override var description: String {
-        return "year:\(year) month:\(month) day:\(day) hour:\(hour) minute:\(minute) second:\(day)"
     }
 }

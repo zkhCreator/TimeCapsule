@@ -56,6 +56,7 @@ class TCMonthPickerView: UIView {
         setupButton()
         if !needsUpDateCurrentLabelFrame {
             setupCurrentLabelFrame()
+            needsUpDateCurrentLabelFrame = true
         }
     }
     
@@ -79,7 +80,8 @@ class TCMonthPickerView: UIView {
     }
     
     func updateCurrentLabel(model:TCEventShowModel) {
-        currentLabel.text = model.yearString + " " + model.monthFullString
+        currentLabel.text = generateTitleString(showModel: model)
+        needsUpDateCurrentLabelFrame = false
         setupCurrentLabelFrame()
     }
     
@@ -96,7 +98,7 @@ class TCMonthPickerView: UIView {
             return ;
         }
         let nextShowModel:TCEventShowModel = self.updateMonthClosuer!(status)
-        let nextTitle = nextShowModel.yearString + " " + nextShowModel.monthFullString
+        let nextTitle = generateTitleString(showModel: nextShowModel)
         
         nextLabel.text = nextTitle
         nextLabel.sizeToFit()
@@ -107,11 +109,14 @@ class TCMonthPickerView: UIView {
     func startAnimate(clickStatus:TCMonthClickStatus) {
         let currentLabelMissFrame = clickStatus == .previous ? createFrame(with: .left, view: currentLabel) : createFrame(with: .right, view: currentLabel)
         let nextLabelFrame = clickStatus == .previous ? createFrame(with: .right, view: nextLabel) : createFrame(with: .left, view: nextLabel)
-        let nextLabelMissFrame = currentLabel.frame
+        let nextLabelMissFrame = createFrame(with: .middle, view: nextLabel)
         self.nextLabel.frame = nextLabelFrame
         
         leftButton.isEnabled = false
         rightButton.isEnabled = false
+        
+        self.currentLabel.alpha = 1
+        self.nextLabel.alpha = 0
         
         UIView.animate(withDuration: 0.3, animations: {
             self.currentLabel.frame = currentLabelMissFrame
@@ -119,17 +124,22 @@ class TCMonthPickerView: UIView {
             self.currentLabel.alpha = 0
             self.nextLabel.alpha = 1
         }) { (finished) in
-            let tempLabel = self.currentLabel;
-            self.currentLabel = self.nextLabel
-            self.nextLabel = tempLabel
-
-            self.leftButton.isEnabled = true
-            self.rightButton.isEnabled = true
-            
+            if finished {
+                let tempLabel = self.currentLabel;
+                self.currentLabel = self.nextLabel
+                self.nextLabel = tempLabel
+                
+                self.leftButton.isEnabled = true
+                self.rightButton.isEnabled = true
+            }
         }
     }
     
     // MARK: private
+    func generateTitleString(showModel:TCEventShowModel) -> String {
+        return showModel.monthFullString + " " + showModel.yearString
+    }
+    
     func createNextLabel(with status:TCMonthClickStatus, title:String) -> UILabel {
         let tempLabel = UILabel.init(frame: .zero)
         tempLabel.textColor = UIColor.black
