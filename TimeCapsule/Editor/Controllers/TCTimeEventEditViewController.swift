@@ -14,10 +14,12 @@ class TCTimeEventEditViewController: TCBasicViewController {
     let eventModel:TCEventShowModel
     let contentView = UITableView.init(frame: CGRect.zero, style: .plain)
     let calenderPickerView:TCCalenderPickerView
+    let clockPickerView:TCClockPickerView
     
     init(with data:TCEventModel = TCEventModel()) {
         eventModel = TCEventShowModel.init(with: data)
         calenderPickerView = TCCalenderPickerView.init(with: eventModel)
+        clockPickerView = TCClockPickerView.init(with: .hour)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,7 +36,8 @@ class TCTimeEventEditViewController: TCBasicViewController {
     func setupView() {
         view.addSubview(eventView)
         view.addSubview(contentView)
-        view.addSubview(calenderPickerView)
+//        view.addSubview(calenderPickerView)
+        view.addSubview(clockPickerView)
         
         view.backgroundColor = UIColor.white
         eventView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 170)
@@ -45,7 +48,7 @@ class TCTimeEventEditViewController: TCBasicViewController {
         contentView.backgroundColor = UIColor.green
         
         calenderPickerView.frame = contentView.frame
-        
+        clockPickerView.frame = contentView.frame
     }
     
     func updateDate() {

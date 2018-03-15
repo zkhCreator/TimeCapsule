@@ -20,6 +20,7 @@ class TCCalenderPickerView: UIView {
     var nextDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
     
     var canUpdatePickerView:Bool = true
+    var selectedDateClosuer:((TCEventShowModel)->())?
 
     override init(frame: CGRect) {
         initShowModel = TCEventShowModel()
@@ -49,6 +50,20 @@ class TCCalenderPickerView: UIView {
             self.startAnimate(with: status)
             return self.currentShowModel
         }
+        
+        currentDatePickerView.updateSelectedDate = {[unowned self](selecteDay:Int) in
+            let tempShowModel = self.currentShowModel.manager
+            self.currentShowModel.manager.date = Date.customDate(year: tempShowModel.year,
+                                                            month: tempShowModel.month.rawValue,
+                                                            day: selecteDay,
+                                                            hour: 0, minute: 0, timeZone: tempShowModel.comp.timeZone!)
+            self.initShowModel = self.currentShowModel
+            if self.selectedDateClosuer != nil {
+                self.selectedDateClosuer!(self.currentShowModel)
+            }
+        }
+        
+        nextDatePickerView.updateSelectedDate = currentDatePickerView.updateSelectedDate
     }
     
     convenience init(with showModel:TCEventShowModel) {
@@ -60,7 +75,7 @@ class TCCalenderPickerView: UIView {
     
     func update(with showModel:TCEventShowModel) {
         monthPickerView.updateCurrentLabel(model: showModel)
-        currentDatePickerView.select(date: showModel.manager.day)
+        currentDatePickerView.updateSelected(day: showModel.manager.day)
         currentDatePickerView.update(with: showModel)
     }
     
@@ -81,7 +96,7 @@ class TCCalenderPickerView: UIView {
         nextDatePickerView.alpha = 0
         
         if self.currentShowModel.monthString == self.initShowModel.monthString {
-            nextDatePickerView.select(date: self.initShowModel.manager.day)
+            nextDatePickerView.updateSelected(day: self.initShowModel.manager.day)
         }
         
         UIView.animate(withDuration: 0.3, animations: {

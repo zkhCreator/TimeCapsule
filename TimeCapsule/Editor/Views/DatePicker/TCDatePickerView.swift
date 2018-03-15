@@ -9,21 +9,16 @@
 import UIKit
 
 class TCDatePickerView: UIView {
-    
-    var currentDate:Int
-    var selectedDate:Int
+
     var buttonArray = [UIButton]()
     var selectedButton:UIButton?
     
     var firstDayWeekday = TCWeekday.Sunday
+    var updateSelectedDate:((Int)->())?
     
-    var selectedLabel:UILabel?
-    
+    // MARK:init obj
     override init(frame: CGRect) {
-        currentDate = 1
-        selectedDate = 1
         super.init(frame: frame)
-        setupView()
         
         for i in 0 ..< 31 {
             let button = UIButton.init(type: .custom)
@@ -35,19 +30,17 @@ class TCDatePickerView: UIView {
             button.setTitleColor(UIColor.black, for: .normal)
             buttonArray.append(button)
             addSubview(button)
-            
         }
     }
     
-    func setupView() {
+    func setupLabelsFrame() {
         var currentDayOffset = firstDayWeekday.rawValue - 1
-        let offsetX:CGFloat = 0
-        let viewWidth = self.bounds.width - CGFloat(offsetX * 2)
+        let viewWidth = self.bounds.width
         let singleWidth = viewWidth / CGFloat(7)
         
         for label in buttonArray {
             let line = (currentDayOffset / 7)
-            label.frame = CGRect(x: offsetX + singleWidth * CGFloat(currentDayOffset % 7), y: CGFloat(line) * CGFloat(singleWidth), width: singleWidth, height: singleWidth)
+            label.frame = CGRect(x: singleWidth * CGFloat(currentDayOffset % 7), y: CGFloat(line) * CGFloat(singleWidth), width: singleWidth, height: singleWidth)
             
             currentDayOffset = currentDayOffset + 1
         }
@@ -69,18 +62,18 @@ class TCDatePickerView: UIView {
         selectedButton?.backgroundColor = UIColor.clear
         selectedButton?.isSelected = false
     }
-    
-    func select(date:Int) {
-        updateSelected(day: date)
-    }
-    
+
     @objc func click(button:UIButton) {
         self.updateSelected(day: button.tag + 1)
+        
+        if updateSelectedDate != nil {
+            updateSelectedDate!(button.tag + 1)
+        }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupView()
+        setupLabelsFrame()
     }
     
     func updateSelected(day:Int) {

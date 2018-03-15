@@ -28,6 +28,9 @@
 		E8A94AF5205408940091C300 /* TCMonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AF4205408940091C300 /* TCMonthPickerView.swift */; };
 		E8A94B1C205673300091C300 /* TCDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B1B205673300091C300 /* TCDatePickerView.swift */; };
 		E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B20205677000091C300 /* TCPickerDataTool.swift */; };
+		E8CF720F205951C9003FCCC2 /* TCClockPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CF720E205951C9003FCCC2 /* TCClockPickerView.swift */; };
+		E8CF7211205957E8003FCCC2 /* TCClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CF7210205957E8003FCCC2 /* TCClockView.swift */; };
+		E8CF72132059662C003FCCC2 /* Marco.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CF72122059662C003FCCC2 /* Marco.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		E8A94AF4205408940091C300 /* TCMonthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCMonthPickerView.swift; sourceTree = "<group>"; };
 		E8A94B1B205673300091C300 /* TCDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDatePickerView.swift; sourceTree = "<group>"; };
 		E8A94B20205677000091C300 /* TCPickerDataTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerDataTool.swift; sourceTree = "<group>"; };
+		E8CF720E205951C9003FCCC2 /* TCClockPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCClockPickerView.swift; sourceTree = "<group>"; };
+		E8CF7210205957E8003FCCC2 /* TCClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCClockView.swift; sourceTree = "<group>"; };
+		E8CF72122059662C003FCCC2 /* Marco.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marco.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +197,7 @@
 		E8A94AE0205405540091C300 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E8CF720D2059518F003FCCC2 /* TimePicker */,
 				E8A94AF8205582500091C300 /* DatePicker */,
 				E8A94AE1205405540091C300 /* TCEventView.swift */,
 			);
@@ -204,6 +211,7 @@
 				E8A94AE3205405540091C300 /* extension.swift */,
 				E8A94AE4205405540091C300 /* TCBasicNavigationController.swift */,
 				E8A94AE5205405540091C300 /* TCBasicViewController.swift */,
+				E8CF72122059662C003FCCC2 /* Marco.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -224,6 +232,15 @@
 				E8A94B20205677000091C300 /* TCPickerDataTool.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		E8CF720D2059518F003FCCC2 /* TimePicker */ = {
+			isa = PBXGroup;
+			children = (
+				E8CF720E205951C9003FCCC2 /* TCClockPickerView.swift */,
+				E8CF7210205957E8003FCCC2 /* TCClockView.swift */,
+			);
+			path = TimePicker;
 			sourceTree = "<group>";
 		};
 		F1A73220C21A93357349DE25 /* Frameworks */ = {
@@ -401,9 +418,12 @@
 				E8A94AEE205405550091C300 /* extension.swift in Sources */,
 				E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */,
 				E8A94B1C205673300091C300 /* TCDatePickerView.swift in Sources */,
+				E8CF72132059662C003FCCC2 /* Marco.swift in Sources */,
 				E8A94AF5205408940091C300 /* TCMonthPickerView.swift in Sources */,
 				E8A94AEF205405550091C300 /* TCBasicNavigationController.swift in Sources */,
 				E8A94AF32054083E0091C300 /* TCCalenderPickerView.swift in Sources */,
+				E8CF720F205951C9003FCCC2 /* TCClockPickerView.swift in Sources */,
+				E8CF7211205957E8003FCCC2 /* TCClockView.swift in Sources */,
 				E8A94AF1205405550091C300 /* TCTimeAdapter.swift in Sources */,
 				E8A94AF0205405550091C300 /* TCBasicViewController.swift in Sources */,
 				E8A94AE8205405550091C300 /* TCTimeManager.swift in Sources */,

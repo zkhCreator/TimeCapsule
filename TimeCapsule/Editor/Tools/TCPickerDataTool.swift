@@ -18,3 +18,8 @@ enum TCCustomViewPosition {
     case middle
     case right
 }
+
+enum TCClockPickerStatus {
+    case minutes
+    case hour
+}
