@@ -12,19 +12,52 @@ class TCClockView: UIView {
     var timeButtonArray = [UIButton]()
     var timeLine:UIView
     
-    let status:TCClockPickerStatus
+    var calculateClockStatus:TCClockPickerStatus {
+        set {
+            if self.status == newValue {
+                return
+            }
+            
+            self.status = newValue
+            for (index, button) in self.timeButtonArray.enumerated() {
+                button.setTitle(status == .hour ? self.hourStatus == .AM ? "\(index)" : "\((index + 12)) " : "\((index) * 5)", for: .normal)
+            }
+        } get {
+            return self.status
+        }
+    }
+    private var status:TCClockPickerStatus
+    
+    var calculateHourStatus:TCClockHourStatus {
+        set {
+            if status != .hour || self.hourStatus == newValue {
+                return
+            }
+            self.hourStatus = newValue
+            
+            for (index, button) in self.timeButtonArray.enumerated() {
+                button.setTitle(self.hourStatus == .AM ? "\(index)" : "\(index + 12) ", for: .normal)
+            }
+        }
+        get {
+            return self.hourStatus
+        }
+    }
+    
+    private var hourStatus:TCClockHourStatus
+    
     var clickButtonClosuer:((_ time:Int)->())?
     
     var selectButton:UIButton?
-    
     var currentRadius:Int
     
-    init(with status:TCClockPickerStatus) {
-        self.status = status
+    init(with status:TCClockPickerStatus, hourStatus:TCClockHourStatus) {
         timeLine = UIView.init(frame: CGRect.zero)
         timeLine.backgroundColor = UIColor.yellow
         timeLine.layer.anchorPoint = CGPoint(x:0.1, y:0.9)
         currentRadius = 0
+        self.status = status
+        self.hourStatus = hourStatus
         
         super.init(frame: .zero)
         
@@ -32,7 +65,7 @@ class TCClockView: UIView {
 
         for index in 0 ..< 12 {
             let button = UIButton.init(type: .custom)
-            button.setTitle(status == .hour ? "\(index + 1)" : "\((index + 1) * 5)", for: .normal)
+            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
             button.titleLabel?.textAlignment = .center
             button.setTitleColor(UIColor.orange, for: .selected)
             button.setTitleColor(UIColor.black, for: .selected)
@@ -58,7 +91,7 @@ class TCClockView: UIView {
         let radius:CGFloat = self.bounds.width / 2 - size.width / 2
         let perRadius = CGFloat.pi / 180
         for (index, button) in timeButtonArray.enumerated() {
-            let correctRadius:CGFloat = perRadius * CGFloat((-90 + (index + 1) * 30))
+            let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 30))
             let offsetY = sin(correctRadius) * radius
             let offsetX = cos(correctRadius) * radius
             let originX = self.bounds.width / 2 - size.width / 2 + offsetX

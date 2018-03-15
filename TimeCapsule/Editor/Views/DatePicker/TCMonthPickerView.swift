@@ -63,11 +63,11 @@ class TCMonthPickerView: UIView {
     func setupButton() {
         let height = self.bounds.height
         let btnHW:CGFloat = 20
-        leftButton.frame = CGRect(x: 16,
+        leftButton.frame = CGRect(x: marginOffset,
                                   y:(height - btnHW) / 2 ,
                                   width: btnHW, height: btnHW);
         
-        rightButton.frame = CGRect(x: self.bounds.width - 16 - rightButton.frame.size.width,
+        rightButton.frame = CGRect(x: self.bounds.width - marginOffset - rightButton.frame.size.width,
                                    y: leftButton.frame.origin.y,
                                    width: btnHW,
                                    height: btnHW)

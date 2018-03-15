@@ -38,8 +38,8 @@ class TCEventView: UIView {
     
     func setupAutoLayout() {
         yearButton.snp.makeConstraints { (make) in
-            make.left.equalTo(self).offset(16)
-            make.top.equalTo(self).offset(16)
+            make.left.equalTo(self).offset(marginOffset)
+            make.top.equalTo(self).offset(marginOffset)
             make.height.equalTo(24)
         }
         
@@ -69,19 +69,19 @@ class TCEventView: UIView {
         
         summaryTextField.snp.makeConstraints { (make) in
             make.left.equalTo(timeButton)
-            make.right.equalTo(self).offset(-16)
-            make.top.equalTo(timeButton.snp.bottom).offset(16)
+            make.right.equalTo(self).offset(-marginOffset)
+            make.top.equalTo(timeButton.snp.bottom).offset(marginOffset)
         }
         
         statusButton.snp.makeConstraints { (make) in
-            make.right.equalTo(self).offset(-16)
-            make.top.equalTo(self).offset(16)
+            make.right.equalTo(self).offset(-marginOffset)
+            make.top.equalTo(self).offset(marginOffset)
             make.width.height.equalTo(28)
         }
         
         notiButton.snp.makeConstraints { (make) in
-            make.right.equalTo(statusButton.snp.left).offset(-16)
-            make.top.equalTo(self).offset(16)
+            make.right.equalTo(statusButton.snp.left).offset(-marginOffset)
+            make.top.equalTo(self).offset(marginOffset)
             make.width.height.equalTo(28)
         }
     }

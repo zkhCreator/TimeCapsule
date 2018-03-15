@@ -118,14 +118,13 @@ class TCCalenderPickerView: UIView {
         super.layoutSubviews()
         monthPickerView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 30)
         
-        let offsetX:CGFloat = 16
-        let viewWidth = self.bounds.size.width - offsetX * 2
+        let viewWidth = self.bounds.size.width - marginOffset * 2
         
         for (index, label) in weekdayArray.enumerated() {
-            label.frame = CGRect.init(x: CGFloat(index) * viewWidth / CGFloat(weekdayArray.count) + offsetX,
+            label.frame = CGRect.init(x: CGFloat(index) * viewWidth / CGFloat(weekdayArray.count) + marginOffset,
                                       y: self.monthPickerView.bounds.size.height,
                                       width: (viewWidth) / CGFloat(weekdayArray.count),
-                                      height: 16)
+                                      height: marginOffset)
         }
         
         if canUpdatePickerView {
@@ -149,8 +148,8 @@ class TCCalenderPickerView: UIView {
         }
         
         return CGRect(x: offsetX,
-                      y: weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height + 16,
+                      y: weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height + marginOffset,
                       width: self.bounds.size.width,
-                      height: self.bounds.size.height - monthPickerView.frame.height - weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height - 16)
+                      height: self.bounds.size.height - monthPickerView.frame.height - weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height - marginOffset)
     }
 }
