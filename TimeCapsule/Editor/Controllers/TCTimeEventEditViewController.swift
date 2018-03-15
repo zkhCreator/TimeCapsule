@@ -19,7 +19,7 @@ class TCTimeEventEditViewController: TCBasicViewController {
     init(with data:TCEventModel = TCEventModel()) {
         eventModel = TCEventShowModel.init(with: data)
         calenderPickerView = TCCalenderPickerView.init(with: eventModel)
-        clockPickerView = TCClockPickerView.init(with: .hour)
+        clockPickerView = TCClockPickerView(with: eventModel)
         super.init(nibName: nil, bundle: nil)
     }
     

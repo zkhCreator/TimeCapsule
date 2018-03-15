@@ -10,7 +10,7 @@ import UIKit
 
 class TCClockPickerView: UIView {
     
-    let status:TCClockPickerStatus
+    var currentTime:TCEventShowModel
     let clock:TCClockView
     let hourButton:UIButton = {
         let button = UIButton.init(type: .custom)
@@ -58,9 +58,15 @@ class TCClockPickerView: UIView {
         return button
     }()
     
-    init(with status:TCClockPickerStatus, hourStatus:TCClockHourStatus = .AM) {
-        self.status = status
-        self.clock = TCClockView.init(with: status, hourStatus: hourStatus)
+    // DATA
+    var selectedHour:Int
+    var selectedMinute:Int
+    
+    init(with showModel:TCEventShowModel) {
+        self.currentTime = showModel
+        clock = TCClockView.init(hourStatus: showModel.manager.hour >= 12 ? .AM : .PM)
+        selectedHour = 0
+        selectedMinute = 0
         super.init(frame: .zero)
         
         cancelButton.backgroundColor = UIColor.red
@@ -80,6 +86,25 @@ class TCClockPickerView: UIView {
         
         AMButton.addTarget(self, action: #selector(clickHourButton(button:)), for: .touchUpInside)
         PMButton.addTarget(self, action: #selector(clickHourButton(button:)), for: .touchUpInside)
+        
+        clock.clickMinuteClosur = {(minute:Int) in
+            let timeManager = self.currentTime.manager
+            self.currentTime.manager.date = Date.customDate(year: timeManager.year, month: timeManager.month.rawValue, day: timeManager.day, hour: timeManager.hour, minute: minute, timeZone: timeManager.comp.timeZone!)
+            let minuteString = (minute.toString().count == 1 ? "0" : "") + minute.toString()
+            self.minuteButton.setTitle("\(minuteString)", for: .normal)
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }
+        
+        clock.clickHourClosur = {(hour:Int) in
+            var timeManager = self.currentTime.manager
+            self.currentTime.manager.date = Date.customDate(year: timeManager.year, month: timeManager.month.rawValue, day: 
+                timeManager.day, hour: hour, minute: timeManager.minute, timeZone: timeManager.comp.timeZone!)
+            let hourString = (hour.toString().count == 1 ? "0" : "") + hour.toString()
+            self.hourButton.setTitle(hourString, for: .normal)
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,14 +147,33 @@ class TCClockPickerView: UIView {
         self.clock.frame = CGRect(x: clockOffset, y: PMButton.frame.maxY, width: clockWH, height: clockWH)
     }
     
+    // AM && PM 切换
     @objc func clickHourButton(button:UIButton) {
-        let hourStatus:TCClockHourStatus = TCClockHourStatus(rawValue: button.tag)!
-        self.clock.calculateHourStatus = hourStatus
+        self.clock.clear()
+        self.clock.calculateClockStatus = .hour
+        self.clock.calculateHourStatus = TCClockHourStatus(rawValue: button.tag)!
+        
+        if self.clock.calculateHourStatus == .AM && self.currentTime.manager.hour < 12 {
+            self.clock.select(buttonIndex: self.currentTime.manager.hour)
+        }
+        
+        if self.clock.calculateHourStatus == .PM && self.currentTime.manager.hour > 12 {
+            self.clock.select(buttonIndex: self.currentTime.manager.hour - 12)
+        }
     }
     
+    // 时分切换
     @objc func clickStatusButton(button:UIButton) {
-        let status:TCClockPickerStatus = TCClockPickerStatus(rawValue: button.tag)!
+        self.clock.clear()
+        let status = TCClockPickerStatus(rawValue: button.tag)!
         self.clock.calculateClockStatus = status
+        if status == .hour {
+            self.clock.calculateHourStatus = self.currentTime.manager.hour > 12 ? .PM : .AM
+            self.clock.select(buttonIndex: self.currentTime.manager.hour > 12 ? self.currentTime.manager.hour - 12 : self.currentTime.manager.hour)
+        } else {
+            self.clock.select(buttonIndex: Int(self.currentTime.manager.minute / 5))
+
+        }
+        
     }
-    
 }

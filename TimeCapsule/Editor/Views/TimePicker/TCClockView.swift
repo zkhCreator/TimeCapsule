@@ -51,7 +51,10 @@ class TCClockView: UIView {
     var selectButton:UIButton?
     var currentRadius:Int
     
-    init(with status:TCClockPickerStatus, hourStatus:TCClockHourStatus) {
+    var clickHourClosur:((Int)->())?
+    var clickMinuteClosur:((Int)->())?
+    
+    init(with status:TCClockPickerStatus = .hour, hourStatus:TCClockHourStatus) {
         timeLine = UIView.init(frame: CGRect.zero)
         timeLine.backgroundColor = UIColor.yellow
         timeLine.layer.anchorPoint = CGPoint(x:0.1, y:0.9)
@@ -146,6 +149,15 @@ class TCClockView: UIView {
         self.select(buttonIndex: button.tag)
         if clickButtonClosuer != nil {
             clickButtonClosuer!(button.tag)
+        }
+        
+        if clickHourClosur != nil && status == .hour {
+            clickHourClosur!(self.hourStatus == .AM ? button.tag : 12 + button.tag)
+        }
+        
+        // 暂时着这样，之后再精确到分钟
+        if clickMinuteClosur != nil && status == .minutes {
+            clickMinuteClosur!(button.tag * 5)
         }
     }
     
