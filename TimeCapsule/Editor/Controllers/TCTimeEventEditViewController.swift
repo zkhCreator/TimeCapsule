@@ -48,11 +48,13 @@ class TCTimeEventEditViewController: TCBasicViewController {
         
         view.addSubview(eventView!)
         view.addSubview(contentView!)
-        view.addSubview(clockPickerView!)
+        view.addSubview(calenderPickerView!)
+//        view.addSubview(clockPickerView!)
     }
     
     func updateDate() {
         eventView?.updateView(with: eventModel)
+        calenderPickerView?.update(with: eventModel)
         clockPickerView?.updateTime(time: eventModel)
     }
 }

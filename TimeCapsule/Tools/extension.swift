@@ -64,7 +64,6 @@ extension Date {
     func monthDay() -> Int {
         var comp = Calendar.current.dateComponents([.year, .month], from: self)
         let month = comp.month!
-        let year = comp.year!
 
         if month == 2 {
             return (comp.isLeapMonth!) ? 29 : 28

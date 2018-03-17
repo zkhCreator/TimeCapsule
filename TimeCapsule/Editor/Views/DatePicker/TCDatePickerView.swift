@@ -12,8 +12,6 @@ class TCDatePickerView: UIView {
 
     var buttonArray = [UIButton]()
     var selectedButton:UIButton?
-    
-    var firstDayWeekday = TCWeekday.Sunday
     var updateSelectedDate:((Int)->())?
     
     // MARK:init obj
@@ -33,25 +31,20 @@ class TCDatePickerView: UIView {
         }
     }
     
-    func setupLabelsFrame() {
-        var currentDayOffset = firstDayWeekday.rawValue - 1
-        let viewWidth = self.bounds.width
-        let singleWidth = viewWidth / CGFloat(7)
-        
-        for label in buttonArray {
-            let line = (currentDayOffset / 7)
-            label.frame = CGRect(x: singleWidth * CGFloat(currentDayOffset % 7), y: CGFloat(line) * CGFloat(singleWidth), width: singleWidth, height: singleWidth)
-            
-            currentDayOffset = currentDayOffset + 1
-        }
-    }
-    
     func update(with showModel:TCEventShowModel) {
-        firstDayWeekday = showModel.manager.firstDayWeekDay
+        
+        let firstDayWeekday = showModel.manager.firstDayWeekDay
+        var currentDayOffset = firstDayWeekday.rawValue - 1
+        let viewWidth = self.bounds.width - 2 * marginOffset
+        let singleWidth = viewWidth / CGFloat(7)
         
         for (index, label) in buttonArray.enumerated() {
             if index < showModel.manager.date.monthDay() {
                 label.alpha = 1
+                let line = (currentDayOffset / 7)
+                label.frame = CGRect(x: singleWidth * CGFloat(currentDayOffset % 7) + marginOffset, y: CGFloat(line) * CGFloat(singleWidth), width: singleWidth, height: singleWidth)
+                
+                currentDayOffset = currentDayOffset + 1
             } else {
                 label.alpha = 0;
             }
@@ -69,11 +62,6 @@ class TCDatePickerView: UIView {
         if updateSelectedDate != nil {
             updateSelectedDate!(button.tag + 1)
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setupLabelsFrame()
     }
     
     func updateSelected(day:Int) {

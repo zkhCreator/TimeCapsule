@@ -18,11 +18,11 @@ class TCMonthPickerView: UIView {
     
     var updateMonthClosuer:((TCMonthClickStatus)->(TCEventShowModel))?
     
-    var needsUpDateCurrentLabelFrame:Bool = false
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        setupButton()
+        setupCurrentLabelFrame()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,19 +47,6 @@ class TCMonthPickerView: UIView {
         rightButton.addTarget(self, action: #selector(clickNextButton), for: .touchUpInside)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setupFrame()
-    }
-    
-    func setupFrame() {
-        setupButton()
-        if !needsUpDateCurrentLabelFrame {
-            setupCurrentLabelFrame()
-            needsUpDateCurrentLabelFrame = true
-        }
-    }
-    
     func setupButton() {
         let height = self.bounds.height
         let btnHW:CGFloat = 20
@@ -67,13 +54,12 @@ class TCMonthPickerView: UIView {
                                   y:(height - btnHW) / 2 ,
                                   width: btnHW, height: btnHW);
         
-        rightButton.frame = CGRect(x: self.bounds.width - marginOffset - rightButton.frame.size.width,
+        rightButton.frame = CGRect(x: self.bounds.width - marginOffset - btnHW,
                                    y: leftButton.frame.origin.y,
                                    width: btnHW,
                                    height: btnHW)
     }
     
-    // TODO: add button && label frame to layoutSubview && set key to switch update or animation
     func setupCurrentLabelFrame() {
         currentLabel.sizeToFit()
         currentLabel.frame = createFrame(with: .middle, view: currentLabel);
@@ -81,7 +67,6 @@ class TCMonthPickerView: UIView {
     
     func updateCurrentLabel(model:TCEventShowModel) {
         currentLabel.text = generateTitleString(showModel: model)
-        needsUpDateCurrentLabelFrame = false
         setupCurrentLabelFrame()
     }
     

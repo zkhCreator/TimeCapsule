@@ -13,25 +13,26 @@ class TCCalenderPickerView: UIView {
     var initShowModel:TCEventShowModel
     var currentShowModel:TCEventShowModel
     
-    let monthPickerView:TCMonthPickerView = TCMonthPickerView.init(frame: .zero)
+    var monthPickerView:TCMonthPickerView?
     var weekdayArray = [UILabel]()
     
-    var currentDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
-    var nextDatePickerView:TCDatePickerView = TCDatePickerView.init(frame: .zero)
+    var currentDatePickerView:TCDatePickerView?
+    var nextDatePickerView:TCDatePickerView?
     
-    var canUpdatePickerView:Bool = true
     var selectedDateClosuer:((TCEventShowModel)->())?
+    
+    let weekHeight = marginOffset
 
     override init(frame: CGRect) {
         initShowModel = TCEventShowModel()
         currentShowModel = TCEventShowModel()
+
         super.init(frame: frame)
-        addSubview(monthPickerView)
-        addSubview(currentDatePickerView)
-        addSubview(nextDatePickerView)
-        nextDatePickerView.alpha = 0
-        self.backgroundColor = UIColor.white
+        // 月份选择器
+        monthPickerView = TCMonthPickerView.init(frame:CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 30))
+        addSubview(monthPickerView!)
         
+        // 星期指示器
         // 顶部静止的 weekday
         for dayTitle in TCTimeAdapter.showSunFirstWeekOmissionName() {
             let label = UILabel.init()
@@ -41,7 +42,24 @@ class TCCalenderPickerView: UIView {
             weekdayArray.append(label)
         }
         
-        monthPickerView.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel)  in
+        let viewWidth = self.bounds.size.width - marginOffset * 2
+        for (index, label) in weekdayArray.enumerated() {
+            label.frame = CGRect.init(x: CGFloat(index) * viewWidth / CGFloat(weekdayArray.count) + marginOffset,
+                                      y: self.monthPickerView!.bounds.size.height,
+                                      width: (viewWidth) / CGFloat(weekdayArray.count),
+                                      height: weekHeight)
+        }
+        
+        currentDatePickerView = TCDatePickerView.init(frame:self.createNewFrame(with: .middle))
+        nextDatePickerView = TCDatePickerView.init(frame:self.createNewFrame(with: .right))
+        
+        addSubview(currentDatePickerView!)
+        addSubview(nextDatePickerView!)
+        nextDatePickerView?.alpha = 0
+        self.backgroundColor = UIColor.white
+        
+        
+        monthPickerView?.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel)  in
             if status == .previous {
                 self.currentShowModel.manager.date = self.currentShowModel.manager.date.previousMonth()
             } else {
@@ -51,7 +69,7 @@ class TCCalenderPickerView: UIView {
             return self.currentShowModel
         }
         
-        currentDatePickerView.updateSelectedDate = {[unowned self](selecteDay:Int) in
+        currentDatePickerView?.updateSelectedDate = {[unowned self](selecteDay:Int) in
             let tempShowModel = self.currentShowModel.manager
             self.currentShowModel.manager.date = Date.customDate(year: tempShowModel.year,
                                                             month: tempShowModel.month.rawValue,
@@ -63,15 +81,15 @@ class TCCalenderPickerView: UIView {
             }
         }
         
-        nextDatePickerView.updateSelectedDate = currentDatePickerView.updateSelectedDate
+        nextDatePickerView?.updateSelectedDate = currentDatePickerView?.updateSelectedDate
     }
     
     func update(with showModel:TCEventShowModel) {
         initShowModel = showModel
         currentShowModel = showModel
-        monthPickerView.updateCurrentLabel(model: showModel)
-        currentDatePickerView.updateSelected(day: showModel.manager.day)
-        currentDatePickerView.update(with: showModel)
+        monthPickerView?.updateCurrentLabel(model: showModel)
+        currentDatePickerView?.updateSelected(day: showModel.manager.day)
+        currentDatePickerView?.update(with: showModel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -86,48 +104,27 @@ class TCCalenderPickerView: UIView {
         let nextMoveFromFrame = createNewFrame(with: nextMoveFromDirection)
         let nextMoveToFrame = createNewFrame(with: .middle)
         
-        nextDatePickerView.frame = nextMoveFromFrame
-        nextDatePickerView.update(with: self.currentShowModel)
-        nextDatePickerView.alpha = 0
+        nextDatePickerView?.frame = nextMoveFromFrame
+        nextDatePickerView?.update(with: self.currentShowModel)
+        nextDatePickerView?.alpha = 0
         
         if self.currentShowModel.monthString == self.initShowModel.monthString {
-            nextDatePickerView.updateSelected(day: self.initShowModel.manager.day)
+            nextDatePickerView?.updateSelected(day: self.initShowModel.manager.day)
         }
         
         UIView.animate(withDuration: 0.3, animations: {
-            self.nextDatePickerView.frame = nextMoveToFrame
-            self.currentDatePickerView.frame = currentViewMoveToFrame
-            self.nextDatePickerView.alpha = 1
-            self.currentDatePickerView.alpha = 0
+            self.nextDatePickerView?.frame = nextMoveToFrame
+            self.currentDatePickerView?.frame = currentViewMoveToFrame
+            self.nextDatePickerView?.alpha = 1
+            self.currentDatePickerView?.alpha = 0
         }) { (finished) in
             if finished {
-                self.currentDatePickerView.clear()
+                self.currentDatePickerView?.clear()
                 let tempPickerView = self.nextDatePickerView
-                self.nextDatePickerView = self.currentDatePickerView
+                self.nextDatePickerView = self.currentDatePickerView!
                 self.currentDatePickerView = tempPickerView
             }
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        monthPickerView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 30)
-        
-        let viewWidth = self.bounds.size.width - marginOffset * 2
-        
-        for (index, label) in weekdayArray.enumerated() {
-            label.frame = CGRect.init(x: CGFloat(index) * viewWidth / CGFloat(weekdayArray.count) + marginOffset,
-                                      y: self.monthPickerView.bounds.size.height,
-                                      width: (viewWidth) / CGFloat(weekdayArray.count),
-                                      height: marginOffset)
-        }
-        
-        if canUpdatePickerView {
-            canUpdatePickerView = false
-            currentDatePickerView.frame = self.createNewFrame(with: .middle)
-        }
-        
-        
     }
     
     func createNewFrame(with position:TCCustomViewPosition) -> CGRect {
@@ -143,8 +140,8 @@ class TCCalenderPickerView: UIView {
         }
         
         return CGRect(x: offsetX,
-                      y: weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height + marginOffset,
+                      y: (weekdayArray.first?.frame.maxY)! + marginOffset,
                       width: self.bounds.size.width,
-                      height: self.bounds.size.height - monthPickerView.frame.height - weekdayArray.first!.frame.origin.y + weekdayArray.first!.frame.size.height - marginOffset)
+                      height: self.bounds.size.height - monthPickerView!.frame.height - (weekdayArray.first?.frame.maxY)! - marginOffset)
     }
 }
