@@ -62,7 +62,7 @@ class TCClockView: UIView {
     var clickHourClosur:((Int)->())?
     var clickMinuteClosur:((Int)->())?
     
-    var currentHourRadius:CGFloat = 0;  // 度数，不是 PI 值
+    var currentHourRadius:CGFloat = 0;  // 弧度值
     var currentMintuesRadius:CGFloat = 0;
     
     override init(frame: CGRect) {
@@ -135,12 +135,14 @@ class TCClockView: UIView {
             if clickHourClosur != nil {
                 clickHourClosur!(correctHour)
             }
+            select(buttonIndex: correctHour % 12)
         } else {
             self.currentMintuesRadius = radius
             let correctMinute = convertToShowTime(with: radius, clockStatus: .minutes)
             if clickMinuteClosur != nil {
                 clickMinuteClosur!(correctMinute)
             }
+            select(buttonIndex: correctMinute / 5)
         }
         
         if gesture.state != .ended || gesture.state == .cancelled {

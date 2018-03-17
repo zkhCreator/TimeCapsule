@@ -196,7 +196,7 @@ class TCClockPickerView: UIView {
             self.clock?.select(buttonIndex: self.currentTime.manager.hour % 12)
         } else {
             self.clock?.updateMintuesTime(minutes: self.selectedMinute, animation: true)
-            self.clock?.select(buttonIndex: self.currentTime.manager.hour % 5)
+            self.clock?.select(buttonIndex: self.currentTime.manager.minute / 5)
         }
         
     }
