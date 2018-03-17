@@ -15,6 +15,8 @@ class TCClockView: UIView {
 
     // 所有的按钮
     var timeButtonArray = [UIButton]()
+    var minuteButtonArray = [UIButton]()
+    
     // 针
     var timeLine:UIView?
     
@@ -65,6 +67,9 @@ class TCClockView: UIView {
     var currentHourRadius:CGFloat = 0;  // 弧度值
     var currentMintuesRadius:CGFloat = 0;
     
+    // MARK:Static
+    let WH:CGFloat = 30
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupClockFace()
@@ -72,28 +77,15 @@ class TCClockView: UIView {
     }
     
     func setupClockFace() {
-        let WH:CGFloat = 40
-        let size = CGSize.init(width: WH, height: WH)
-        let radius:CGFloat = (self.bounds.width - size.width) / 2
+        for index in 0 ..< 60 {
+            let button = createMinuteButton(with: index)
+            minuteButtonArray.append(button)
+            addSubview(button)
+        }
+        
         
         for index in 0 ..< 12 {
-            let button = UIButton.init(type: .custom)
-            button.titleLabel?.textAlignment = .center
-            button.setTitleColor(UIColor.orange, for: .selected)
-            button.setTitleColor(UIColor.black, for: .selected)
-            button.tag = index
-            button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
-            button.backgroundColor = UIColor.red
-            button.layer.cornerRadius = size.width / 2.0
-
-            let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 30))
-            let offsetY = sin(correctRadius) * radius
-            let offsetX = cos(correctRadius) * radius
-            let originX = self.bounds.width / 2 - size.width / 2 + offsetX
-            let originY = self.bounds.height / 2 - size.width / 2 + offsetY
-            button.frame = CGRect(origin: CGPoint(x:originX, y:originY), size: size)
-            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
-
+            let button = createHourButton(with: index)
             timeButtonArray.append(button)
             addSubview(button)
         }
@@ -105,6 +97,49 @@ class TCClockView: UIView {
         timeLine?.frame = timeLineFrame
         timeLine?.backgroundColor = UIColor.yellow
         addSubview(timeLine!)
+    }
+    
+    func createHourButton(with index:Int) -> UIButton {
+        let size = CGSize.init(width: WH, height: WH)
+        let radius:CGFloat = (self.bounds.width - size.width) / 2
+        let button = UIButton.init(type: .custom)
+        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(UIColor.orange, for: .selected)
+        button.setTitleColor(UIColor.black, for: .selected)
+        button.tag = index
+        button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
+        button.backgroundColor = UIColor.red
+        button.layer.cornerRadius = size.width / 2.0
+        
+        let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 30))
+        let offsetY = sin(correctRadius) * radius
+        let offsetX = cos(correctRadius) * radius
+        let originX = self.bounds.width / 2 - size.width / 2 + offsetX
+        let originY = self.bounds.height / 2 - size.width / 2 + offsetY
+        button.frame = CGRect(origin: CGPoint(x:originX, y:originY), size: size)
+        button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
+        
+        return button
+    }
+    
+    func createMinuteButton(with index:Int) -> UIButton {
+        let size = CGSize.init(width: WH / 8, height: WH / 8)
+        let radius:CGFloat = (self.bounds.width - size.width) / 2
+        let button = UIButton.init(type: .custom)
+        button.titleLabel?.textAlignment = .center
+        button.tag = index
+        button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
+        button.backgroundColor = UIColor.red
+        button.layer.cornerRadius = size.width / 2.0
+        
+        let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 6))
+        let offsetY = sin(correctRadius) * radius
+        let offsetX = cos(correctRadius) * radius
+        let originX = self.bounds.width / 2 - size.width / 2 + offsetX
+        let originY = self.bounds.height / 2 - size.width / 2 + offsetY
+        button.frame = CGRect(origin: CGPoint(x:originX, y:originY), size: size)
+
+        return button
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -142,7 +177,7 @@ class TCClockView: UIView {
             if clickMinuteClosur != nil {
                 clickMinuteClosur!(correctMinute)
             }
-            select(buttonIndex: correctMinute / 5)
+            select(minuteIndex: correctMinute)
         }
         
         if gesture.state != .ended || gesture.state == .cancelled {
@@ -169,7 +204,7 @@ class TCClockView: UIView {
             let minutes = button.tag * 5
             clickMinuteClosur!(minutes)
             updateMintuesTime(minutes: minutes, animation: true)
-            self.select(buttonIndex: button.tag)
+            self.select(minuteIndex: button.tag)
         }
     }
 }
@@ -184,14 +219,29 @@ extension TCClockView {
             return
         }
         self.clear()
-        
         self.timeButtonArray[safe:buttonIndex]?.isSelected = true
         self.selectButton = self.timeButtonArray[safe:buttonIndex]
+    }
+    
+    func select(minuteIndex:Int) {
+        if minuteIndex < 0 || minuteIndex > 60 {
+            return
+        }
+        self.clear()
+        if minuteIndex % 5 == 0 {
+            self.select(buttonIndex: minuteIndex / 5)
+        } else {
+            let button = self.minuteButtonArray[safe:minuteIndex]
+            button?.isSelected = true
+            button?.backgroundColor = UIColor.white
+            self.selectButton = self.minuteButtonArray[safe:minuteIndex]
+        }
     }
     
     /// 清除选中的状态
     func clear() {
         selectButton?.isSelected = false
+        selectButton?.backgroundColor = UIColor.red
     }
 }
 
@@ -237,10 +287,10 @@ extension TCClockView {
         if status == .hour {
             let hour = lroundf(Float(self.currentHourRadius / 30.0))
             let correctHour = hourStatus == .AM ? hour : hour + 12
-            return correctHour
+            return correctHour == 24 ? correctHour - 12 : correctHour
         } else {
             let minute = lroundf(Float(self.currentMintuesRadius / 6.0))
-            return minute
+            return minute % 60
         }
     }
     
