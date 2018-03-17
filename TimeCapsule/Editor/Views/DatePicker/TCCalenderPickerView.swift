@@ -66,14 +66,9 @@ class TCCalenderPickerView: UIView {
         nextDatePickerView.updateSelectedDate = currentDatePickerView.updateSelectedDate
     }
     
-    convenience init(with showModel:TCEventShowModel) {
-        self.init(frame: .zero)
-        self.initShowModel = showModel
-        self.currentShowModel = showModel
-        self.update(with: showModel)
-    }
-    
     func update(with showModel:TCEventShowModel) {
+        initShowModel = showModel
+        currentShowModel = showModel
         monthPickerView.updateCurrentLabel(model: showModel)
         currentDatePickerView.updateSelected(day: showModel.manager.day)
         currentDatePickerView.update(with: showModel)

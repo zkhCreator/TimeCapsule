@@ -9,9 +9,31 @@
 import UIKit
 
 class TCClockView: UIView {
-    var timeButtonArray = [UIButton]()
-    var timeLine:UIView
+    // 所有的按钮
+    var timeButtonArray:[UIButton] = {
+        var array = [UIButton]()
+        for index in 0 ..< 12 {
+            let button = UIButton.init(type: .custom)
+            button.titleLabel?.textAlignment = .center
+            button.setTitleColor(UIColor.orange, for: .selected)
+            button.setTitleColor(UIColor.black, for: .selected)
+            button.tag = index
+            button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
+            array.append(button)
+            button.backgroundColor = UIColor.red
+        }
+        return array;
+    }()
+    // 针
+    var timeLine:UIView = {
+        let line = UIView.init()
+        line.backgroundColor = UIColor.yellow
+        line.layer.anchorPoint = CGPoint(x:0.5, y:0.9)
+        
+        return line
+    }()
     
+    // 用于读写当前的钟面是小时还是分钟
     var calculateClockStatus:TCClockPickerStatus {
         set {
             if self.status == newValue {
@@ -26,8 +48,9 @@ class TCClockView: UIView {
             return self.status
         }
     }
-    private var status:TCClockPickerStatus
+    private var status:TCClockPickerStatus = .hour
     
+    // 用于读写当前的钟面时候 AM 还是 PM
     var calculateHourStatus:TCClockHourStatus {
         set {
             if status != .hour || self.hourStatus == newValue {
@@ -43,43 +66,26 @@ class TCClockView: UIView {
             return self.hourStatus
         }
     }
+    private var hourStatus:TCClockHourStatus = .AM
     
-    private var hourStatus:TCClockHourStatus
-    
+    // 按钮点击之后的回调
     var clickButtonClosuer:((_ time:Int)->())?
     
+    // 选中的那个按钮
     var selectButton:UIButton?
-    var currentRadius:Int
     
     var clickHourClosur:((Int)->())?
     var clickMinuteClosur:((Int)->())?
     
-    init(with status:TCClockPickerStatus = .hour, hourStatus:TCClockHourStatus) {
-        timeLine = UIView.init(frame: CGRect.zero)
-        timeLine.backgroundColor = UIColor.yellow
-        timeLine.layer.anchorPoint = CGPoint(x:0.1, y:0.9)
-        currentRadius = 0
-        self.status = status
-        self.hourStatus = hourStatus
-        
+    var canUploadFrame:Bool = true
+    
+    init() {
         super.init(frame: .zero)
-        
-        timeLine.layer.position = CGPoint(x: self.bounds.width / 2.0 - self.timeLine.frame.width / 2.0, y: self.bounds.height / 2.0)
-
-        for index in 0 ..< 12 {
-            let button = UIButton.init(type: .custom)
-            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
-            button.titleLabel?.textAlignment = .center
-            button.setTitleColor(UIColor.orange, for: .selected)
-            button.setTitleColor(UIColor.black, for: .selected)
-            addSubview(button)
-            button.tag = index
-            button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
-            timeButtonArray.append(button)
-            button.backgroundColor = UIColor.red
-        }
-        
         addSubview(timeLine)
+        for (index, button) in timeButtonArray.enumerated() {
+            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
+            addSubview(button)
+        }
         setupAction()
     }
     
@@ -100,50 +106,74 @@ class TCClockView: UIView {
             let originX = self.bounds.width / 2 - size.width / 2 + offsetX
             let originY = self.bounds.height / 2 - size.width / 2 + offsetY
             button.frame = CGRect(origin: CGPoint(x:originX, y:originY), size: size)
+            button.layer.cornerRadius = size.width / 2.0
         }
 
-        timeLine.frame = CGRect.init(x: CGFloat(self.bounds.width / 2 - 10), y: WH, width: 20.0, height: radius)
+        if canUploadFrame {
+            canUploadFrame = false
+//            timeLine.layer.position = CGPoint(x: self.bounds.width / 2.0 - timeSize.width / 2.0, y: timeSize.height / 2.0)
+            layoutIfNeeded()
+        }
+    }
+    
+    // MARK: public
+    func updateHourTime(hour:Int) {
+        if hour >= 24 || hour < 0 {
+            return
+        }
+        calculateClockStatus = .hour
+        calculateHourStatus = TCClockHourStatus(rawValue: hour / 12)!
+        // 获得 view 需要旋转的角度
+        let perRadius = CGFloat.pi / 180
+        let radius = CGFloat(hour % 12) * 30.0
+//        UIView.animate(withDuration: 5) {
+//        self.timeLine.layer.setAffineTransform(CATransform3DRotate(CATransform3DIdentity, 0, 0, 0, radius * perRadius))
+        timeLine.layer.transform = CATransform3DRotate(timeLine.layer.transform, CGFloat(radius * perRadius), 0, 0, 1);
+        timeLine.frame = CGRect.init(x: CGFloat(self.bounds.width / 2 - 10), y: 40, width: 20.0, height: self.bounds.width / 2 - 20)
+
+        
+
+//            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * perRadius))
+//        };
     }
     
     func setupAction() {
-//        WARNING:晚点做
-//        let pan = UIPanGestureRecognizer.init(target: self, action: #selector(moveAnimation(gesture:)))
-//        self.isUserInteractionEnabled = true;
-//        self.addGestureRecognizer(pan)
+        // 当用户转动钟面的时候就可以调整指针的位置
+        let pan = UIPanGestureRecognizer.init(target: self, action: #selector(moveAnimation(gesture:)))
+        self.isUserInteractionEnabled = true;
+        self.addGestureRecognizer(pan)
     }
     
-//    @objc func moveAnimation(gesture:UIPanGestureRecognizer) {
-//        let point = gesture.location(in: self)
-//        let centerPoint = CGPoint.init(x: self.bounds.width / 2.0, y: self.bounds.height / 2.0)
-//        print(self.center)
-//        let offset:CGPoint = CGPoint(x:CGFloat(point.x - centerPoint.x), y:CGFloat(point.y - centerPoint.y))
-//        let perRadius = CGFloat.pi / 180
-//
-//        var radius:CGFloat = 0.0;
-//        // 右下角
-//        if offset.x > 0 && offset.y >= 0 {
-//            radius = atan(offset.y / offset.x) / perRadius
-//        }
-//
-//        // 左下角
-//        if offset.x <= 0 && offset.y > 0 {
-//            radius = 90 + atan(abs(offset.x) / offset.y) / perRadius
-//        }
-//
-//        // 左上角
-//        if offset.x <= 0 && offset.y < 0 {
-//            radius = 180 + atan(abs(offset.y) / abs(offset.x)) / perRadius
-//        }
-//
-//        // 右上角
-//        if offset.x > 0 && offset.y <= 0 {
-//            print(offset)
-//            radius = 270 + atan(offset.x / abs(offset.y)) / perRadius
-//        }
-//
-//        print(radius)
-//
-//    }
+    @objc func moveAnimation(gesture:UIPanGestureRecognizer) {
+        let point = gesture.location(in: self)
+        let centerPoint = CGPoint.init(x: self.bounds.width / 2.0, y: self.bounds.height / 2.0)
+        let offset:CGPoint = CGPoint(x:CGFloat(point.x - centerPoint.x), y:CGFloat(point.y - centerPoint.y))
+        let perRadius = CGFloat.pi / 180
+
+        var radius:CGFloat = 0.0;
+        // 右下角
+        if offset.x > 0 && offset.y >= 0 {
+            radius = atan(offset.y / offset.x) / perRadius
+        }
+
+        // 左下角
+        if offset.x <= 0 && offset.y > 0 {
+            radius = 90 + atan(abs(offset.x) / offset.y) / perRadius
+        }
+
+        // 左上角
+        if offset.x <= 0 && offset.y < 0 {
+            radius = 180 + atan(abs(offset.y) / abs(offset.x)) / perRadius
+        }
+
+        // 右上角
+        if offset.x > 0 && offset.y <= 0 {
+            print(offset)
+            radius = 270 + atan(offset.x / abs(offset.y)) / perRadius
+        }
+
+        print(radius)
+    }
     
     @objc func click(button:UIButton) {
         self.select(buttonIndex: button.tag)
