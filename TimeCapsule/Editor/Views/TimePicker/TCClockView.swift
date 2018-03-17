@@ -16,13 +16,7 @@ class TCClockView: UIView {
     // 所有的按钮
     var timeButtonArray = [UIButton]()
     // 针
-    var timeLine:UIView = {
-        let line = UIView.init()
-        line.backgroundColor = UIColor.yellow
-//        line.layer.anchorPoint = CGPoint(x:0.5, y:0.9)
-        
-        return line
-    }()
+    var timeLine:UIView?
     
     // 用于读写当前的钟面是小时还是分钟
     var calculateClockStatus:TCClockPickerStatus {
@@ -103,11 +97,11 @@ class TCClockView: UIView {
         
         let timeLineFrame = CGRect.init(x: CGFloat((self.bounds.width - 20) / 2), y: 40, width: 20.0, height: self.bounds.width / 2 - 20)
         timeLine = UIView.init()
-        timeLine.layer.anchorPoint = CGPoint(x:0.5, y:0.88)
-        timeLine.layer.position = CGPoint(x: self.bounds.width / 2.0, y: timeLineFrame.height / 2.0)
-        timeLine.frame = timeLineFrame
-        timeLine.backgroundColor = UIColor.yellow
-        addSubview(timeLine)
+        timeLine?.layer.anchorPoint = CGPoint(x:0.5, y:0.88)
+        timeLine?.layer.position = CGPoint(x: self.bounds.width / 2.0, y: timeLineFrame.height / 2.0)
+        timeLine?.frame = timeLineFrame
+        timeLine?.backgroundColor = UIColor.yellow
+        addSubview(timeLine!)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -123,13 +117,7 @@ class TCClockView: UIView {
         calculateHourStatus = TCClockHourStatus(rawValue: hour / 12)!
         // 获得 view 需要旋转的角度
         let radius = CGFloat(hour % 12) * 30.0
-        if animation {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
-            })
-        } else {
-            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
-        }
+        self.animation(with: radius * self.perRadius, animation: animation)
         
     }
     
@@ -140,9 +128,21 @@ class TCClockView: UIView {
         calculateClockStatus = .minutes
         // 获得 view 需要旋转的角度
         let radius = CGFloat(minutes) * 6.0
-        UIView.animate(withDuration: 0.5, animations: {
-            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
-        })
+        self.animation(with: radius * self.perRadius, animation: animation)
+    }
+    
+    func select(buttonIndex:Int) {
+        if buttonIndex < 0 || buttonIndex >= 12 {
+            return
+        }
+        self.clear()
+        
+        self.timeButtonArray[safe:buttonIndex]?.isSelected = true
+        self.selectButton = self.timeButtonArray[safe:buttonIndex]
+    }
+    
+    func clear() {
+        selectButton?.isSelected = false
     }
     
     // MARK:private
@@ -183,32 +183,30 @@ class TCClockView: UIView {
     }
     
     @objc func click(button:UIButton) {
-        self.select(buttonIndex: button.tag)
-        if clickButtonClosuer != nil {
-            clickButtonClosuer!(button.tag)
-        }
-        
         if clickHourClosur != nil && status == .hour {
-            clickHourClosur!(self.hourStatus == .AM ? button.tag : 12 + button.tag)
+            let hour = self.hourStatus == .AM ? button.tag : 12 + button.tag
+            clickHourClosur!(hour)
+            updateHourTime(hour: hour, animation: true)
+            self.select(buttonIndex: button.tag)
         }
         
         // 暂时着这样，之后再精确到分钟
         if clickMinuteClosur != nil && status == .minutes {
-            clickMinuteClosur!(button.tag * 5)
+            let minutes = button.tag * 5
+            clickMinuteClosur!(minutes)
+            updateMintuesTime(minutes: minutes, animation: true)
+            self.select(buttonIndex: button.tag)
         }
     }
     
-    func select(buttonIndex:Int) {
-        if buttonIndex < 0 || buttonIndex >= 12 {
-            return
+    func animation(with radius:CGFloat, animation:Bool = false) {
+        if animation {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.timeLine?.transform = CGAffineTransform(rotationAngle: radius)
+            })
+        } else {
+            self.timeLine?.transform = CGAffineTransform(rotationAngle: radius)
         }
-        self.clear()
-        
-        self.timeButtonArray[safe:buttonIndex]?.isSelected = true
-        self.selectButton = self.timeButtonArray[safe:buttonIndex]
-    }
-    
-    func clear() {
-        selectButton?.isSelected = false
     }
 }
+

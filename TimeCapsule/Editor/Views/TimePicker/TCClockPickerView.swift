@@ -172,6 +172,8 @@ class TCClockPickerView: UIView {
         selectedMinute = minute
         
         self.clock?.updateHourTime(hour: self.selectedHour, animation: false)
+        self.clock?.select(buttonIndex: self.currentTime.manager.hour % 12)
+
     }
     
     // AM && PM 切换
@@ -191,8 +193,10 @@ class TCClockPickerView: UIView {
         if status == .hour {
             self.clock?.calculateHourStatus = TCClockHourStatus.init(rawValue:self.currentTime.manager.hour / 12)!
             self.clock?.updateHourTime(hour: self.selectedHour, animation: true)
+            self.clock?.select(buttonIndex: self.currentTime.manager.hour % 12)
         } else {
             self.clock?.updateMintuesTime(minutes: self.selectedMinute, animation: true)
+            self.clock?.select(buttonIndex: self.currentTime.manager.hour % 5)
         }
         
     }
