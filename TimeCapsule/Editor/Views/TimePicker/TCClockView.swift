@@ -9,26 +9,17 @@
 import UIKit
 
 class TCClockView: UIView {
+    
+    // static
+    let perRadius = CGFloat.pi / 180
+
     // 所有的按钮
-    var timeButtonArray:[UIButton] = {
-        var array = [UIButton]()
-        for index in 0 ..< 12 {
-            let button = UIButton.init(type: .custom)
-            button.titleLabel?.textAlignment = .center
-            button.setTitleColor(UIColor.orange, for: .selected)
-            button.setTitleColor(UIColor.black, for: .selected)
-            button.tag = index
-            button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
-            array.append(button)
-            button.backgroundColor = UIColor.red
-        }
-        return array;
-    }()
+    var timeButtonArray = [UIButton]()
     // 针
     var timeLine:UIView = {
         let line = UIView.init()
         line.backgroundColor = UIColor.yellow
-        line.layer.anchorPoint = CGPoint(x:0.5, y:0.9)
+//        line.layer.anchorPoint = CGPoint(x:0.5, y:0.9)
         
         return line
     }()
@@ -77,43 +68,50 @@ class TCClockView: UIView {
     var clickHourClosur:((Int)->())?
     var clickMinuteClosur:((Int)->())?
     
-    var canUploadFrame:Bool = true
-    
-    init() {
-        super.init(frame: .zero)
-        addSubview(timeLine)
-        for (index, button) in timeButtonArray.enumerated() {
-            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
-            addSubview(button)
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupClockFace()
         setupAction()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    func setupClockFace() {
         let WH:CGFloat = 40
         let size = CGSize.init(width: WH, height: WH)
-        let radius:CGFloat = self.bounds.width / 2 - size.width / 2
-        let perRadius = CGFloat.pi / 180
-        for (index, button) in timeButtonArray.enumerated() {
+        let radius:CGFloat = (self.bounds.width - size.width) / 2
+        
+        for index in 0 ..< 12 {
+            let button = UIButton.init(type: .custom)
+            button.titleLabel?.textAlignment = .center
+            button.setTitleColor(UIColor.orange, for: .selected)
+            button.setTitleColor(UIColor.black, for: .selected)
+            button.tag = index
+            button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
+            button.backgroundColor = UIColor.red
+            button.layer.cornerRadius = size.width / 2.0
+
             let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 30))
             let offsetY = sin(correctRadius) * radius
             let offsetX = cos(correctRadius) * radius
             let originX = self.bounds.width / 2 - size.width / 2 + offsetX
             let originY = self.bounds.height / 2 - size.width / 2 + offsetY
             button.frame = CGRect(origin: CGPoint(x:originX, y:originY), size: size)
-            button.layer.cornerRadius = size.width / 2.0
-        }
+            button.setTitle(status == .hour ? "\(index)" : "\((index) * 5)", for: .normal)
 
-        if canUploadFrame {
-            canUploadFrame = false
-//            timeLine.layer.position = CGPoint(x: self.bounds.width / 2.0 - timeSize.width / 2.0, y: timeSize.height / 2.0)
-            layoutIfNeeded()
+            timeButtonArray.append(button)
+            addSubview(button)
         }
+        
+        let timeLineFrame = CGRect.init(x: CGFloat((self.bounds.width - 20) / 2), y: 40, width: 20.0, height: self.bounds.width / 2 - 20)
+        timeLine = UIView.init()
+        timeLine.layer.anchorPoint = CGPoint(x:0.5, y:0.88)
+        timeLine.layer.position = CGPoint(x: self.bounds.width / 2.0, y: timeLineFrame.height / 2.0)
+        timeLine.frame = timeLineFrame
+        timeLine.backgroundColor = UIColor.yellow
+        addSubview(timeLine)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: public
@@ -124,17 +122,8 @@ class TCClockView: UIView {
         calculateClockStatus = .hour
         calculateHourStatus = TCClockHourStatus(rawValue: hour / 12)!
         // 获得 view 需要旋转的角度
-        let perRadius = CGFloat.pi / 180
         let radius = CGFloat(hour % 12) * 30.0
-//        UIView.animate(withDuration: 5) {
-//        self.timeLine.layer.setAffineTransform(CATransform3DRotate(CATransform3DIdentity, 0, 0, 0, radius * perRadius))
-        timeLine.layer.transform = CATransform3DRotate(timeLine.layer.transform, CGFloat(radius * perRadius), 0, 0, 1);
-        timeLine.frame = CGRect.init(x: CGFloat(self.bounds.width / 2 - 10), y: 40, width: 20.0, height: self.bounds.width / 2 - 20)
-
-        
-
-//            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * perRadius))
-//        };
+        self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * perRadius))
     }
     
     func setupAction() {
@@ -148,7 +137,6 @@ class TCClockView: UIView {
         let point = gesture.location(in: self)
         let centerPoint = CGPoint.init(x: self.bounds.width / 2.0, y: self.bounds.height / 2.0)
         let offset:CGPoint = CGPoint(x:CGFloat(point.x - centerPoint.x), y:CGFloat(point.y - centerPoint.y))
-        let perRadius = CGFloat.pi / 180
 
         var radius:CGFloat = 0.0;
         // 右下角
@@ -168,7 +156,6 @@ class TCClockView: UIView {
 
         // 右上角
         if offset.x > 0 && offset.y <= 0 {
-            print(offset)
             radius = 270 + atan(offset.x / abs(offset.y)) / perRadius
         }
 

@@ -14,10 +14,10 @@ class TCTimeEventEditViewController: TCBasicViewController {
     let eventModel:TCEventShowModel
     
     // View: View
-    var eventView = TCEventView.init(frame: CGRect.zero)
-    let contentView = UITableView.init(frame: CGRect.zero, style: .plain)
-    let calenderPickerView:TCCalenderPickerView = TCCalenderPickerView()
-    let clockPickerView:TCClockPickerView = TCClockPickerView()
+    var eventView:TCEventView?
+    var contentView:UITableView?
+    var calenderPickerView:TCCalenderPickerView?
+    var clockPickerView:TCClockPickerView?
     
     init(with data:TCEventModel = TCEventModel()) {
         eventModel = TCEventShowModel.init(with: data)
@@ -35,26 +35,24 @@ class TCTimeEventEditViewController: TCBasicViewController {
     }
     
     func setupView() {
-        view.addSubview(eventView)
-        view.addSubview(contentView)
-//        view.addSubview(calenderPickerView)
-        view.addSubview(clockPickerView)
-        
         view.backgroundColor = UIColor.white
-        eventView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 170)
-        eventView.backgroundColor = UIColor.red
+        eventView = TCEventView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 170))
+        eventView!.backgroundColor = UIColor.red
         
-        let eventViewOffsetY = eventView.frame.origin.y + eventView.frame.height
-        contentView.frame = CGRect(x: 0, y: eventViewOffsetY, width: view.bounds.width, height: view.bounds.height - eventViewOffsetY)
-        contentView.backgroundColor = UIColor.green
+        let eventViewOffsetY = eventView!.frame.origin.y + eventView!.frame.height
+        contentView = UITableView(frame: CGRect(x: 0, y: eventViewOffsetY, width: view.bounds.width, height: view.bounds.height - eventViewOffsetY), style: .plain)
+        contentView?.backgroundColor = UIColor.green
         
-        calenderPickerView.frame = contentView.frame
-        clockPickerView.frame = contentView.frame
+        calenderPickerView = TCCalenderPickerView.init(frame: contentView!.frame)
+        clockPickerView = TCClockPickerView.init(frame: contentView!.frame)
+        
+        view.addSubview(eventView!)
+        view.addSubview(contentView!)
+        view.addSubview(clockPickerView!)
     }
     
     func updateDate() {
-        eventView.updateView(with: eventModel)
-//        calenderPickerView = TCCalenderPickerView.init(with: eventModel)
-        clockPickerView.updateTime(time: eventModel)
+        eventView?.updateView(with: eventModel)
+        clockPickerView?.updateTime(time: eventModel)
     }
 }
