@@ -16,7 +16,7 @@ class TCClockPickerView: UIView {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 36)
         button.setTitle("12", for: .normal)
         button.tag = TCClockPickerStatus.hour.rawValue
-        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.textAlignment = .right
         return button
     }()
     
@@ -25,7 +25,7 @@ class TCClockPickerView: UIView {
         button.setTitle("00", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 36)
         button.tag = TCClockPickerStatus.minutes.rawValue
-        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.textAlignment = .left
         return button
     }()
     
@@ -62,7 +62,6 @@ class TCClockPickerView: UIView {
         set {
             let hourString = (newValue.toString().count == 1 ? "0" : "") + newValue.toString()
             self.hourButton.setTitle("\(hourString)", for: .normal)
-            self.hourButton.setNeedsLayout()
         }
         get {
             return Int((self.hourButton.titleLabel?.text)!)!
@@ -73,7 +72,6 @@ class TCClockPickerView: UIView {
         set {
             let minuteString = (newValue.toString().count == 1 ? "0" : "") + newValue.toString()
             self.minuteButton.setTitle("\(minuteString)", for: .normal)
-            self.minuteButton.setNeedsLayout()
         }
         get {
             return Int((self.minuteButton.titleLabel?.text)!)!
@@ -99,8 +97,6 @@ class TCClockPickerView: UIView {
             self.currentTime.manager.date = Date.customDate(year: timeManager.year, month: timeManager.month.rawValue, day: timeManager.day, hour: timeManager.hour, minute: minute, timeZone: timeManager.comp.timeZone!)
             let minuteString = (minute.toString().count == 1 ? "0" : "") + minute.toString()
             self.minuteButton.setTitle("\(minuteString)", for: .normal)
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
         }
         
         clock?.clickHourClosur = {(hour:Int) in
@@ -109,8 +105,6 @@ class TCClockPickerView: UIView {
                 timeManager.day, hour: hour, minute: timeManager.minute, timeZone: timeManager.comp.timeZone!)
             let hourString = (hour.toString().count == 1 ? "0" : "") + hour.toString()
             self.hourButton.setTitle(hourString, for: .normal)
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
         }
         
         addSubview(clock!)
@@ -125,21 +119,20 @@ class TCClockPickerView: UIView {
                                       y: marginOffset,
                                       width: timeLabel.frame.width,
                                       height: timeLabel.frame.height)
-        hourButton.sizeToFit()
-        hourButton.frame = CGRect.init(x: timeLabel.frame.minX - hourButton.frame.width,
-                                       y: timeLabel.frame.minY,
-                                       width: hourButton.frame.width,
-                                       height: timeLabel.frame.height)
-        minuteButton.sizeToFit()
-        minuteButton.frame = CGRect.init(x: timeLabel.frame.minX + timeLabel.frame.width,
-                                         y: timeLabel.frame.minY,
-                                         width: minuteButton.frame.width,
-                                         height: timeLabel.frame.height)
-        
         AMButton.frame = CGRect.init(x: self.bounds.size.width / 2 - AMButton.frame.width - 16,
                                      y: timeLabel.frame.origin.y + timeLabel.frame.size.height,
                                      width: AMButton.frame.size.width,
                                      height: AMButton.frame.size.height)
+        
+        let timeSize = CGSize(width: 50.0, height: 36.0)
+        hourButton.frame = CGRect.init(x: timeLabel.frame.minX - timeSize.width,
+                                       y: timeLabel.frame.minY,
+                                       width: timeSize.width,
+                                       height: timeLabel.frame.height)
+        minuteButton.frame = CGRect.init(x: timeLabel.frame.maxX,
+                                         y: timeLabel.frame.minY,
+                                         width: timeSize.width,
+                                         height: timeLabel.frame.height)
         
         PMButton.frame = CGRect.init(x: self.bounds.size.width / 2 + 16,
                                      y: timeLabel.frame.origin.y + timeLabel.frame.size.height,
@@ -178,7 +171,7 @@ class TCClockPickerView: UIView {
         selectedHour = hour
         selectedMinute = minute
         
-        clock?.updateHourTime(hour: hour)
+        self.clock?.updateHourTime(hour: self.selectedHour, animation: false)
     }
     
     // AM && PM 切换
@@ -197,9 +190,9 @@ class TCClockPickerView: UIView {
         
         if status == .hour {
             self.clock?.calculateHourStatus = TCClockHourStatus.init(rawValue:self.currentTime.manager.hour / 12)!
-            self.clock?.select(buttonIndex: self.currentTime.manager.hour % 12)
+            self.clock?.updateHourTime(hour: self.selectedHour, animation: true)
         } else {
-            self.clock?.select(buttonIndex: Int(self.currentTime.manager.minute / 5))
+            self.clock?.updateMintuesTime(minutes: self.selectedMinute, animation: true)
         }
         
     }

@@ -115,7 +115,7 @@ class TCClockView: UIView {
     }
     
     // MARK: public
-    func updateHourTime(hour:Int) {
+    func updateHourTime(hour:Int, animation:Bool = false) {
         if hour >= 24 || hour < 0 {
             return
         }
@@ -123,9 +123,29 @@ class TCClockView: UIView {
         calculateHourStatus = TCClockHourStatus(rawValue: hour / 12)!
         // 获得 view 需要旋转的角度
         let radius = CGFloat(hour % 12) * 30.0
-        self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * perRadius))
+        if animation {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
+            })
+        } else {
+            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
+        }
+        
     }
     
+    func updateMintuesTime(minutes:Int, animation:Bool = false) {
+        if minutes >= 60 || minutes < 0 {
+            return
+        }
+        calculateClockStatus = .minutes
+        // 获得 view 需要旋转的角度
+        let radius = CGFloat(minutes) * 6.0
+        UIView.animate(withDuration: 0.5, animations: {
+            self.timeLine.transform = CGAffineTransform(rotationAngle: CGFloat(radius * self.perRadius))
+        })
+    }
+    
+    // MARK:private
     func setupAction() {
         // 当用户转动钟面的时候就可以调整指针的位置
         let pan = UIPanGestureRecognizer.init(target: self, action: #selector(moveAnimation(gesture:)))
