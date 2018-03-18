@@ -31,6 +31,12 @@ class TCClockView: UIView {
             for (index, button) in self.timeButtonArray.enumerated() {
                 button.setTitle(status == .hour ? self.hourStatus == .AM ? "\(index)" : "\((index + 12)) " : "\((index) * 5)", for: .normal)
             }
+            
+            let hiddenButton = newValue == .minutes ? false : true
+            for button in minuteButtonArray {
+                button.isHidden = hiddenButton
+            }
+            
         } get {
             return self.status
         }
@@ -131,6 +137,7 @@ class TCClockView: UIView {
         button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
         button.backgroundColor = UIColor.red
         button.layer.cornerRadius = size.width / 2.0
+        button.isHidden = true
         
         let correctRadius:CGFloat = perRadius * CGFloat((-90 + index * 6))
         let offsetY = sin(correctRadius) * radius
@@ -285,9 +292,9 @@ extension TCClockView {
     /// - Returns: 获得的时间，分别对应小时和分钟
     func convertToShowTime(with currentRadius:CGFloat, clockStatus:TCClockPickerStatus) -> Int {
         if status == .hour {
-            let hour = lroundf(Float(self.currentHourRadius / 30.0))
+            let hour = lroundf(Float(self.currentHourRadius / 30.0)) % 12
             let correctHour = hourStatus == .AM ? hour : hour + 12
-            return correctHour == 24 ? correctHour - 12 : correctHour
+            return correctHour
         } else {
             let minute = lroundf(Float(self.currentMintuesRadius / 6.0))
             return minute % 60
