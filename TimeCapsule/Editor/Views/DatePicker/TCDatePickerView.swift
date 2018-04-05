@@ -21,6 +21,7 @@ class TCDatePickerView: UIView {
         for i in 0 ..< 31 {
             let button = UIButton.init(type: .custom)
             button.tag = i
+            button.titleLabel?.backgroundColor = UIColor.white
             button.setTitle("\(i + 1)", for: .normal)
             button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
             button.titleLabel?.textAlignment = .center

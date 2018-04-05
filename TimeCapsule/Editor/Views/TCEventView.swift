@@ -11,6 +11,9 @@ import SnapKit
 
 class TCEventView: UIView {
     
+    let cancelButton = UIButton.init(image: UIImage.init(named: "closeButton")!)
+    let finishButton = UIButton.init(image: UIImage.init(named: "finishButton")!)
+    
     let yearButton = UIButton.init(type: .custom)
     let monthButton = UIButton.init(type: .custom)
     let dayButton = UIButton.init(type: .custom)
@@ -22,6 +25,11 @@ class TCEventView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        let gradientLayer = CAGradientLayer.init(size: frame.size)
+        self.layer.addSublayer(gradientLayer)
+        
+        addSubview(cancelButton)
+        addSubview(finishButton)
         
         addSubview(yearButton)
         addSubview(monthButton)
@@ -37,9 +45,19 @@ class TCEventView: UIView {
     }
     
     func setupAutoLayout() {
+        cancelButton.snp.makeConstraints { (make) in
+            make.top.left.equalTo(self).offset(marginOffset)
+            make.width.height.equalTo(28.0)
+        }
+        
+        finishButton.snp.makeConstraints { (make) in
+            make.width.height.top.equalTo(cancelButton)
+            make.right.equalTo(-marginOffset)
+        }
+        
         yearButton.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(marginOffset)
-            make.top.equalTo(self).offset(marginOffset)
+            make.top.equalTo(cancelButton.snp.bottom).offset(5)
             make.height.equalTo(24)
         }
         
@@ -70,23 +88,25 @@ class TCEventView: UIView {
         summaryTextField.snp.makeConstraints { (make) in
             make.left.equalTo(timeButton)
             make.right.equalTo(self).offset(-marginOffset)
-            make.top.equalTo(timeButton.snp.bottom).offset(marginOffset)
+            make.height.equalTo(24.0)
+            make.top.equalTo(timeButton.snp.bottom)
         }
         
-        statusButton.snp.makeConstraints { (make) in
-            make.right.equalTo(self).offset(-marginOffset)
-            make.top.equalTo(self).offset(marginOffset)
-            make.width.height.equalTo(28)
-        }
-        
-        notiButton.snp.makeConstraints { (make) in
-            make.right.equalTo(statusButton.snp.left).offset(-marginOffset)
-            make.top.equalTo(self).offset(marginOffset)
-            make.width.height.equalTo(28)
-        }
+//        statusButton.snp.makeConstraints { (make) in
+//            make.right.equalTo(self).offset(-marginOffset)
+//            make.top.equalTo(self).offset(marginOffset)
+//            make.width.height.equalTo(28)
+//        }
+//
+//        notiButton.snp.makeConstraints { (make) in
+//            make.right.equalTo(statusButton.snp.left).offset(-marginOffset)
+//            make.top.equalTo(self).offset(marginOffset)
+//            make.width.height.equalTo(28)
+//        }
     }
     
     func setupUI() {
+        
         yearButton.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         monthButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 34)
         dayButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 34)
@@ -96,7 +116,8 @@ class TCEventView: UIView {
         notiButton.backgroundColor = UIColor.yellow
         statusButton.backgroundColor = UIColor.black
         
-        summaryTextField.backgroundColor = UIColor.green
+        let attributeString = NSMutableAttributedString.init(string: "将要发生写什么事情呢？", attributes: [NSAttributedStringKey.foregroundColor : UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.45), NSAttributedStringKey.font:UIFont.boldSystemFont(ofSize: 17.0)])
+        summaryTextField.attributedPlaceholder = attributeString
     }
     
     required init?(coder aDecoder: NSCoder) {

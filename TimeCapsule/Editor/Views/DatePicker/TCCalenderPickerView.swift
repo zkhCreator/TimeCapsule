@@ -38,6 +38,7 @@ class TCCalenderPickerView: UIView {
             let label = UILabel.init()
             label.textAlignment = .center
             label.text = dayTitle
+            label.backgroundColor = UIColor.white
             addSubview(label)
             weekdayArray.append(label)
         }
@@ -58,6 +59,22 @@ class TCCalenderPickerView: UIView {
         nextDatePickerView?.alpha = 0
         self.backgroundColor = UIColor.white
         
+        self.setupAction()
+    }
+    
+    func setupAction() {
+        
+        let directionArray = [UISwipeGestureRecognizerDirection.left, .right]
+        for direct in directionArray {
+            let swipe = UISwipeGestureRecognizer.init(target: self, action: #selector(swipe(with:)))
+            swipe.direction = direct
+            
+            let swipe1 = UISwipeGestureRecognizer.init(target: self, action: #selector(swipe(with:)))
+            swipe1.direction = direct
+            
+            currentDatePickerView?.addGestureRecognizer(swipe)
+            nextDatePickerView?.addGestureRecognizer(swipe1)
+        }
         
         monthPickerView?.updateMonthClosuer = { (status:TCMonthClickStatus) -> (TCEventShowModel)  in
             if status == .previous {
@@ -72,9 +89,9 @@ class TCCalenderPickerView: UIView {
         currentDatePickerView?.updateSelectedDate = {[unowned self](selecteDay:Int) in
             let tempShowModel = self.currentShowModel.manager
             self.currentShowModel.manager.date = Date.customDate(year: tempShowModel.year,
-                                                            month: tempShowModel.month.rawValue,
-                                                            day: selecteDay,
-                                                            hour: 0, minute: 0, timeZone: tempShowModel.comp.timeZone!)
+                                                                 month: tempShowModel.month.rawValue,
+                                                                 day: selecteDay,
+                                                                 hour: 0, minute: 0, timeZone: tempShowModel.comp.timeZone!)
             self.initShowModel = self.currentShowModel
             if self.selectedDateClosuer != nil {
                 self.selectedDateClosuer!(self.currentShowModel)
@@ -96,6 +113,20 @@ class TCCalenderPickerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func swipe(with gesture:UISwipeGestureRecognizer) {
+        print(gesture.direction)
+        
+        let updateStatus:TCMonthClickStatus = (gesture.direction == .left) ? .next : .previous;
+        if updateStatus == .previous {
+            self.currentShowModel.manager.date = self.currentShowModel.manager.date.previousMonth()
+        } else {
+            self.currentShowModel.manager.date = self.currentShowModel.manager.date.nextMonth()
+        }
+        
+        self.monthPickerView?.updateCurrentLabel(model: self.currentShowModel)
+        startAnimate(with: updateStatus)
+    }
+    
     func startAnimate(with status:TCMonthClickStatus) {
         
         let currentMoveDirection:TCCustomViewPosition = status == .next ? .left : .right
@@ -108,9 +139,13 @@ class TCCalenderPickerView: UIView {
         nextDatePickerView?.update(with: self.currentShowModel)
         nextDatePickerView?.alpha = 0
         
-        if self.currentShowModel.monthString == self.initShowModel.monthString {
+        if self.currentShowModel.monthString == self.initShowModel.monthString &&
+            self.currentShowModel.yearString == self.initShowModel.yearString {
             nextDatePickerView?.updateSelected(day: self.initShowModel.manager.day)
         }
+        
+        currentDatePickerView?.isUserInteractionEnabled = false
+        nextDatePickerView?.isUserInteractionEnabled = false
         
         UIView.animate(withDuration: 0.3, animations: {
             self.nextDatePickerView?.frame = nextMoveToFrame
@@ -123,6 +158,8 @@ class TCCalenderPickerView: UIView {
                 let tempPickerView = self.nextDatePickerView
                 self.nextDatePickerView = self.currentDatePickerView!
                 self.currentDatePickerView = tempPickerView
+                self.currentDatePickerView?.isUserInteractionEnabled = true
+                self.nextDatePickerView?.isUserInteractionEnabled = true
             }
         }
     }

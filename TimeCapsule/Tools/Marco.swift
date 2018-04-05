@@ -6,7 +6,17 @@
 //  Copyright © 2018 zkhCreator. All rights reserved.
 //
 
-import Foundation
-import CoreGraphics
+import UIKit
 
-let marginOffset:CGFloat = 16
+// 存在空隙的大小
+let marginOffset:CGFloat = 20
+let smallMarginOffset:CGFloat = 10
+
+// 按钮大小
+let baseButtonFrame:CGFloat = 44
+
+// tintColor
+let deepColor = UIColor.init(hexColor: 0x2695EC)
+let lightColor = UIColor.init(hexColor: 0x2DBEED)
+
+

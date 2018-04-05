@@ -11,7 +11,7 @@ import UIKit
 class TCTimeEventEditViewController: TCBasicViewController {
 
     // MARK: Data
-    let eventModel:TCEventShowModel
+    var eventModel:TCEventShowModel
     
     // View: View
     var eventView:TCEventView?
@@ -31,13 +31,14 @@ class TCTimeEventEditViewController: TCBasicViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        self.setupCallBackAction()
         self.updateDate()
+        
     }
     
     func setupView() {
         view.backgroundColor = UIColor.white
-        eventView = TCEventView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 170))
-        eventView!.backgroundColor = UIColor.red
+        eventView = TCEventView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 204))
         
         let eventViewOffsetY = eventView!.frame.origin.y + eventView!.frame.height
         contentView = UITableView(frame: CGRect(x: 0, y: eventViewOffsetY, width: view.bounds.width, height: view.bounds.height - eventViewOffsetY), style: .plain)
@@ -48,13 +49,25 @@ class TCTimeEventEditViewController: TCBasicViewController {
         
         view.addSubview(eventView!)
         view.addSubview(contentView!)
-//        view.addSubview(calenderPickerView!)
-        view.addSubview(clockPickerView!)
+        view.addSubview(calenderPickerView!)
+//        view.addSubview(clockPickerView!)
+    }
+    
+    func setupCallBackAction() {
+        calenderPickerView?.selectedDateClosuer = { (model:TCEventShowModel) in
+            self.eventModel = model
+        }
     }
     
     func updateDate() {
         eventView?.updateView(with: eventModel)
         calenderPickerView?.update(with: eventModel)
         clockPickerView?.updateTime(time: eventModel)
+    }
+}
+
+extension TCTimeEventEditViewController {
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 }

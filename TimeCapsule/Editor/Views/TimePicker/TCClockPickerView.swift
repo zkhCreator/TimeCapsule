@@ -78,6 +78,8 @@ class TCClockPickerView: UIView {
         }
     }
     
+    var completionBlock : ((_ completionTime:TCEventShowModel)->())?
+    
     
     override init(frame: CGRect) {
         self.currentTime = TCEventShowModel.init()
@@ -157,6 +159,9 @@ class TCClockPickerView: UIView {
         
         AMButton.addTarget(self, action: #selector(clickHourButton(button:)), for: .touchUpInside)
         PMButton.addTarget(self, action: #selector(clickHourButton(button:)), for: .touchUpInside)
+        
+        finishedButton.addTarget(self, action: #selector(clickFinishedButton), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(clickCancelButton), for: .touchUpInside)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -199,5 +204,16 @@ class TCClockPickerView: UIView {
             self.clock?.select(minuteIndex: self.currentTime.manager.minute)
         }
         
+    }
+    
+    @objc func clickFinishedButton() {
+        print(currentTime)
+        if completionBlock != nil {
+            completionBlock!(currentTime)
+        }
+    }
+    
+    @objc func clickCancelButton() {
+        print(currentTime)
     }
 }
