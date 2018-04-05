@@ -30,8 +30,8 @@ class TCCheckBoxButton: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        checkbox.frame = CGRect.init(x: 0, y: 0, width: baseButtonFrame, height: baseButtonFrame)
-        contentLabel.frame = CGRect.init(x: baseButtonFrame + smallMarginOffset, y: 0, width: self.bounds.size.width - checkbox.frame.size.width - smallMarginOffset, height: checkbox.frame.height)
+        checkbox.frame = CGRect.init(x: 0, y: 0, width: baseButtonWH, height: baseButtonWH)
+        contentLabel.frame = CGRect.init(x: baseButtonWH + smallMarginOffset, y: 0, width: self.bounds.size.width - checkbox.frame.size.width - smallMarginOffset, height: checkbox.frame.height)
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {

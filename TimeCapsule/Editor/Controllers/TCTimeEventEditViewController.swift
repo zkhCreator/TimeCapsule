@@ -49,8 +49,8 @@ class TCTimeEventEditViewController: TCBasicViewController {
         
         view.addSubview(eventView!)
         view.addSubview(contentView!)
-        view.addSubview(calenderPickerView!)
-//        view.addSubview(clockPickerView!)
+//        view.addSubview(calenderPickerView!)
+        view.addSubview(clockPickerView!)
     }
     
     func setupCallBackAction() {

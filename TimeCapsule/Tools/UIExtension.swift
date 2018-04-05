@@ -26,7 +26,7 @@ extension UIView {
 
 extension UIImage {
     func tintImage(tintColor:UIColor) -> UIImage {
-        UIGraphicsBeginImageContext(self.size)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
         tintColor.setFill()
         let bounds = CGRect.init(origin: CGPoint.zero, size: self.size)
         UIRectFill(bounds)
@@ -62,6 +62,22 @@ extension CAGradientLayer {
         self.startPoint = fromPoint
         self.endPoint = endPoint
         self.colors = [startColor.cgColor, endColor.cgColor]
+    }
+}
+
+extension CALayer {
+    func setupShadow(color: UIColor = .black, alpha: Float = 0.15, x: CGFloat = 0, y: CGFloat = 0, blur: CGFloat = 0, spread: CGFloat = 0) {
+        shadowColor = color.cgColor
+        shadowOpacity = alpha
+        shadowOffset = CGSize(width: x, height: y)
+        shadowRadius = blur / 2.0
+        if spread == 0 {
+            shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowPath = UIBezierPath.init(roundedRect: rect, cornerRadius: rect.width / 2.0).cgPath
+        }
     }
 }
 

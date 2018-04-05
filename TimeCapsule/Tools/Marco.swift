@@ -13,7 +13,8 @@ let marginOffset:CGFloat = 20
 let smallMarginOffset:CGFloat = 10
 
 // 按钮大小
-let baseButtonFrame:CGFloat = 44
+let baseButtonWH:CGFloat = 44.0
+let toolButtonWH:CGFloat = 28.0
 
 // tintColor
 let deepColor = UIColor.init(hexColor: 0x2695EC)
