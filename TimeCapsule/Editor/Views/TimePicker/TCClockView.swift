@@ -12,21 +12,23 @@ class TCClockView: UIView {
     
     // static
     let perRadius = CGFloat.pi / 180
+    var selectedIndex = 0;
     var clearning = false
     var selecting = false
+
 
     // 所有的按钮
     var timeButtonArray = [UIButton]()
     var minuteButtonArray = [UIButton]()
     
     // 用于读写当前的钟面是小时还是分钟
-    var calculateClockStatus:TCClockPickerStatus {
+    var calculateClockStatus:TCClockPickerState {
         set {
-            if self.status == newValue {
+            if self.state == newValue {
                 return
             }
             
-            self.status = newValue
+            self.state = newValue
 //            for (index, button) in self.timeButtonArray.enumerated() {
 //                button.setTitle(status == .hour ? self.hourStatus == .AM ? "\(index)" : "\((index + 12)) " : "\((index) * 5)", for: .normal)
 //            }
@@ -37,15 +39,15 @@ class TCClockView: UIView {
             }
             
         } get {
-            return self.status
+            return self.state
         }
     }
-    private var status:TCClockPickerStatus = .hour
+    private var state:TCClockPickerState = .hour
     
     // 用于读写当前的钟面时候 AM 还是 PM
     var calculateHourStatus:TCClockHourStatus {
         set {
-            if status != .hour || self.hourStatus == newValue {
+            if state != .hour || self.hourStatus == newValue {
                 return
             }
             self.hourStatus = newValue
@@ -111,8 +113,6 @@ class TCClockView: UIView {
         let button = UIButton.init(type: .custom)
         button.titleLabel?.textAlignment = .center
         button.layer.setupShadow(blur:4)
-//        button.setTitleColor(UIColor.orange, for: .selected)
-//        button.setTitleColor(UIColor.black, for: .selected)
         button.tag = index
         button.addTarget(self, action: #selector(click(button:)), for: .touchUpInside)
         button.backgroundColor = UIColor.white
@@ -171,18 +171,22 @@ class TCClockView: UIView {
 
         let radius = self.getCorrectRadis(offset: offset)
         
+        // 获得对应选中的为第 x 个按钮
+        if state == .hour {
+            let hour = lroundf(Float(self.currentHourRadius / 30.0)) % 12
+            if hour == self.selectedIndex {
+                return
+            }
+        }
+        
         if gesture.state != .ended || gesture.state == .cancelled {
             
         } else {
-            let correctTime = convertToShowTime(with: radius, clockStatus: self.status)
+            let correctTime = convertToShowTime(with: radius, clockStatus: self.state)
             updateTime(date: correctTime, animation: true)
         }
         
-        if selecting && clearning {
-            return 
-        }
-        
-        if self.status == .hour {
+        if self.state == .hour {
             self.currentHourRadius = radius
             let correctHour = convertToShowTime(with: radius, clockStatus: .hour)
             if clickHourClosur != nil {
@@ -204,7 +208,7 @@ class TCClockView: UIView {
     ///
     /// - Parameter button: 点击的按钮
     @objc func click(button:UIButton) {
-        if clickHourClosur != nil && status == .hour {
+        if clickHourClosur != nil && state == .hour {
             let hour = self.hourStatus == .AM ? button.tag : 12 + button.tag
             clickHourClosur!(hour)
             updateHourTime(hour: hour, animation: true)
@@ -212,7 +216,7 @@ class TCClockView: UIView {
         }
         
         // 暂时着这样，之后再精确到分钟
-        if clickMinuteClosur != nil && status == .minutes {
+        if clickMinuteClosur != nil && state == .minutes {
             let minutes = button.tag * 5
             clickMinuteClosur!(minutes)
             updateMintuesTime(minutes: minutes, animation: true)
@@ -237,8 +241,9 @@ extension TCClockView {
     }
     
     func selectButton(at index:NSInteger) {
+        selectedIndex = index;
         self.clear()
-        let needSelectButton = self.status == .hour ? timeButtonArray[safe:index] : minuteButtonArray[safe:index]
+        let needSelectButton = self.state == .hour ? timeButtonArray[safe:index] : minuteButtonArray[safe:index]
         needSelectButton?.isSelected = true
         self.selectButton = needSelectButton
         selecting = true
@@ -290,8 +295,8 @@ extension TCClockView {
     ///   - currentRadius: 旋转的角度
     ///   - clockStatus: 当前是时针还是分针
     /// - Returns: 获得的时间，分别对应小时和分钟
-    func convertToShowTime(with currentRadius:CGFloat, clockStatus:TCClockPickerStatus) -> Int {
-        if status == .hour {
+    func convertToShowTime(with currentRadius:CGFloat, clockStatus:TCClockPickerState) -> Int {
+        if state == .hour {
             let hour = lroundf(Float(self.currentHourRadius / 30.0)) % 12
             let correctHour = hourStatus == .AM ? hour : hour + 12
             return correctHour
@@ -304,7 +309,7 @@ extension TCClockView {
     // MARK: public
     
     func updateTime(date:Int, animation:Bool = false) {
-        self.status == .hour ? updateHourTime(hour: date, animation: animation) : updateMintuesTime(minutes: date, animation: animation)
+        self.state == .hour ? updateHourTime(hour: date, animation: animation) : updateMintuesTime(minutes: date, animation: animation)
     }
     
     /// 通过小时调整 UI，到对应的小时上面

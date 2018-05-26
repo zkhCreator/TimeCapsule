@@ -15,7 +15,7 @@ class TCClockPickerView: UIView {
         let button = UIButton.init(type: .custom)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 36)
         button.setTitle("12", for: .normal)
-        button.tag = TCClockPickerStatus.hour.rawValue
+        button.tag = TCClockPickerState.hour.rawValue
         button.titleLabel?.textAlignment = .right
         return button
     }()
@@ -24,7 +24,7 @@ class TCClockPickerView: UIView {
         let button = UIButton.init(type: .custom)
         button.setTitle("00", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 36)
-        button.tag = TCClockPickerStatus.minutes.rawValue
+        button.tag = TCClockPickerState.minutes.rawValue
         button.titleLabel?.textAlignment = .left
         return button
     }()
@@ -189,7 +189,7 @@ class TCClockPickerView: UIView {
     // 时分切换
     @objc func clickStatusButton(button:UIButton) {
         self.clock?.clear()
-        let status = TCClockPickerStatus(rawValue: button.tag)!
+        let status = TCClockPickerState(rawValue: button.tag)!
         self.clock?.calculateClockStatus = status
         
         if status == .hour {

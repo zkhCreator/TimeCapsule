@@ -9,10 +9,15 @@
 import UIKit
 
 class TCBasicViewController: UIViewController {
-
+    let statusBarView:UIView = UIView.init()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        statusBarView.backgroundColor = UIColor.white
+        statusBarView.frame = UIApplication.shared.statusBarFrame
+        statusBarView.layer.zPosition = 999
+        self.view.addSubview(statusBarView);
         // Do any additional setup after loading the view.
     }
 

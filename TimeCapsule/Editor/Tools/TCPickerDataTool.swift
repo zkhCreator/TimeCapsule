@@ -19,7 +19,7 @@ enum TCCustomViewPosition {
     case right
 }
 
-enum TCClockPickerStatus:Int {
+enum TCClockPickerState:Int {
     case minutes = 0
     case hour
 }
