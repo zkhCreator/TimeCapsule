@@ -34,7 +34,7 @@ class TCTimeListCreateNewItemView: UIView {
     // 创建 item 分割线
     var createItemCriticalValue:CGFloat {
         get {
-            return (self.frame.size.height * 1.5)
+            return (self.frame.size.height * 2)
         }
     }
     
@@ -214,28 +214,16 @@ extension TCTimeListCreateNewItemView {
             self.showCreateItem()
         } else {
             self.state = .idle
-            self.hideCreateView()
         }
     }
     
     func showCreateItem() {
-        
-        guard let currentScrollView = self.scrollView,
-            let currentOffsetY = self.scrollView?.contentOffset.y,
-            let currentInsetTop = self.scrollView?.contentInset.top else {
+        guard let currentScrollView = self.scrollView else {
             return ;
         }
         
-        
-        UIView.animate(withDuration: 0.5) {
-//            currentScrollView.contentInset = UIEdgeInsetsMake(-(self.frame.maxY), 0, 0, 0);
+        UIView.animate(withDuration: 0.3) {
             currentScrollView.setContentOffset(CGPoint.init(x: 0, y: -self.frame.size.height), animated: false)
         };
-        
-        
-    }
-    
-    func hideCreateView() {
-        
     }
 }
