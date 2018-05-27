@@ -21,3 +21,4 @@ let deepColor = UIColor.init(hexColor: 0x2695EC)
 let lightColor = UIColor.init(hexColor: 0x2DBEED)
 
 
+let createItemHeight:CGFloat = 70

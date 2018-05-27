@@ -8,21 +8,19 @@
 
 import UIKit
 
-enum TCTimeListCreateNewItemViewStateType {
+enum TCTimeListStateType {
     case idle,  // 一般状态
     willCreateItem, // 松开将会显示创建 Cell
     createItem,    // 创建 cell
     showArchive   // 松手切换到归档的界面
 }
 
-class TCTimeListCreateNewItemView: UIView {
+class TCTimeListStateManager: NSObject {
     
     // 和滑动相关联
-    weak var scrollView:UIScrollView?
+    weak var tableview:UITableView?
     let TCTimeListContentOffset = "contentOffset"
-    let TCTimeListContentSize = "contentSize"
-    let TCTimeListPanState = "state"
-    var state:TCTimeListCreateNewItemViewStateType {
+    var state:TCTimeListStateType {
         get {
             return self.currentState
         }
@@ -36,13 +34,11 @@ class TCTimeListCreateNewItemView: UIView {
             
             if newValue == .idle && oldStatue == .createItem {
                 DispatchQueue.main.async {
-                    guard let currentScrollView = self.scrollView,
-                        let originalInset = self.scrollViewOriginalInset else {
+                    guard let currentTableview = self.tableview else {
                         return
                     }
                     UIView.animate(withDuration: 0.3, animations: {
-                        currentScrollView.contentInset = originalInset
-                        currentScrollView.contentOffset = CGPoint.init(x: 0, y: 0)
+                        currentTableview.contentOffset = CGPoint.init(x: createItemHeight, y: 0)
                     });
                 }
             }
@@ -50,72 +46,47 @@ class TCTimeListCreateNewItemView: UIView {
             if newValue == .createItem {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
-                        guard let currentScrollview = self.scrollView else {
+                        guard let currentTableview = self.tableview else {
                             return ;
                         }
-                        let top = (self.scrollViewOriginalInset?.top ?? 0) + self.frame.size.height
-                        self.scrollView?.contentInset.top = top
-                        
-                        var contentOffset = currentScrollview.contentOffset
-                        contentOffset.y = -top
-                        currentScrollview.setContentOffset(contentOffset, animated: false)
-                        
-                        guard let closure = self.showCreateItemClosure else {
-                            return ;
-                        }
-                        
-                        closure()
+                        currentTableview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
                     })
+                    
+                    guard let closure = self.showCreateItemClosure else {
+                        return ;
+                    }
+                    
+                    closure()
                 }
             }
             
         }
     }
-    private var currentState:TCTimeListCreateNewItemViewStateType
-    var scrollViewOriginalInset:UIEdgeInsets?
+    private var currentState:TCTimeListStateType
     var showArchiveVCClosure:(()->(Void))?
     var showCreateItemClosure:(()->(Void))?
     var insetT:CGFloat = 0
     
-    let contentView = TCTimeListCreateContentView()
-    
     // 默认状态分割线
     var idleCriticalValue:CGFloat {
         get {
-            return self.frame.size.height / 2
+            return createItemHeight / 2
         }
     }
     // 创建 item 分割线
     var createItemCriticalValue:CGFloat {
         get {
-            return (self.frame.size.height * 2)
+            return (createItemHeight * 2)
         }
     }
     
-    override init(frame: CGRect) {
+    init(with tableview:UITableView) {
         currentState = .idle
-        super.init(frame: frame)
-        self.addSubview(contentView)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = self.bounds
+        super.init()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        self.removeObserver()
-        if newSuperview != nil && newSuperview is UIScrollView {
-            self.frame = CGRect.init(x: 0, y: -60, width: newSuperview?.bounds.width ?? 0, height: 60);
-            self.scrollView = newSuperview as? UIScrollView
-            self.scrollViewOriginalInset = self.scrollView?.contentInset
-            self.addObservers()
-        }
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -126,26 +97,19 @@ class TCTimeListCreateNewItemView: UIView {
     }
     
     func addObservers() {
-        if self.scrollView == nil {
+        if self.tableview == nil {
             return
         }
         
-        let scrollView = self.scrollView!
-        scrollView.addObserver(self, forKeyPath: TCTimeListContentOffset, options: [.new, .old], context: nil)
-        scrollView.addObserver(self, forKeyPath: TCTimeListContentSize, options: [.new, .old], context: nil)
-        scrollView.panGestureRecognizer.addObserver(self, forKeyPath: TCTimeListPanState, options: [.new, .old], context: nil)
-        
-    }
-    
-    func removeObserver() {
-        self.scrollView?.removeObserver(self, forKeyPath: TCTimeListContentSize)
-        self.scrollView?.removeObserver(self, forKeyPath: TCTimeListContentOffset)
-        self.scrollView?.panGestureRecognizer.removeObserver(self, forKeyPath: TCTimeListPanState)
+        guard let currentTableview = self.tableview else {
+            return ;
+        }
+        currentTableview.addObserver(self, forKeyPath: TCTimeListContentOffset, options: [.new, .old], context: nil)
     }
 }
 
 // MARK: - observable
-extension TCTimeListCreateNewItemView {
+extension TCTimeListStateManager {
     func updateItemView(with contentOffset:CGPoint) {
         // 更新 status
         updateStatus(with: contentOffset)
@@ -160,12 +124,12 @@ extension TCTimeListCreateNewItemView {
             return ;
         }
         
-        guard let currentScrollView:UIScrollView = self.scrollView else {
+        guard let currentTableview:UITableView = self.tableview else {
             return ;
         }
         
         // 被拖动的时候
-        if currentScrollView.isDragging {
+        if currentTableview.isDragging {
             self.updateDraggingStatus(with: contentOffset)
         } else {
             self.updateNoDraggingStatus(with: contentOffset)
@@ -174,7 +138,7 @@ extension TCTimeListCreateNewItemView {
 }
 
 // MARK: - update UI After Dragging
-extension TCTimeListCreateNewItemView {
+extension TCTimeListStateManager {
     /// 拖动的时候的更新状态
     ///
     /// - Parameter contentOffst: 偏移量
@@ -186,12 +150,6 @@ extension TCTimeListCreateNewItemView {
             self.state = .showArchive
         }
         
-        print("--------------")
-        print("state: \(self.state)")
-        print("absContentOffsetY: \(absContentOffsetY)")
-        print("idleCriticalValue: \(idleCriticalValue)")
-        print("createItemCriticalValue: \(createItemCriticalValue)")
-        print("--------------")
         // 转变成新建的内容
         if idleCriticalValue < absContentOffsetY &&
             absContentOffsetY < createItemCriticalValue &&

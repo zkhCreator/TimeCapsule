@@ -10,22 +10,23 @@ import UIKit
 
 class TCTimeListViewController: TCBasicViewController {
     let listView = UITableView.init(frame: CGRect.zero, style: .grouped)
-    var headerView:TCTimeListCreateNewItemView? = TCTimeListCreateNewItemView()
+    let createItemCell = TCTimeLIstCreateNewItemCell.init()
+    let viewModel = TCTimeListViewModels()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
+        self.view.addSubview(listView)
+    }
+    
+    func setListView() {
         listView.delegate = self;
         listView.dataSource = self;
         var listViewFrame = self.view.frame
         listViewFrame.origin.y +=  self.statusBarView.frame.height
         listViewFrame.size.height -= self.statusBarView.frame.height
         listView.frame = listViewFrame
-        
-        headerView!.frame = CGRect.init(x: 0, y: 0, width: self.view.bounds.width, height: 44)
-        
-        self.view.addSubview(listView)
-        self.listView.addSubview(headerView!)
+        listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: NSIndexPath(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +47,21 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 && indexPath.section == 0 {
+            return self.createItemCell
+        }
         return UITableViewCell.init();
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.headerView?.state = .idle
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if <#condition#> {
+//            <#code#>
+//        }
+        return 60
     }
+    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        self.headerView?.state = .idle
+//    }
     
 }
