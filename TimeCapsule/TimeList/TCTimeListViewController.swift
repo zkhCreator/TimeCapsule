@@ -49,5 +49,8 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
         return UITableViewCell.init();
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.headerView?.state = .idle
+    }
     
 }

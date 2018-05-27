@@ -82,16 +82,17 @@ extension CALayer {
 }
 
 extension UIColor {
-    convenience init(redHexColor:CGFloat, greenHexColor:CGFloat, blueHexColor:CGFloat) {
+    convenience init(redHexColor:CGFloat, greenHexColor:CGFloat, blueHexColor:CGFloat, alpha:CGFloat = 1.0) {
         assert(redHexColor >= 0 && redHexColor <= 255, "Invalid red component")
         assert(greenHexColor >= 0 && greenHexColor <= 255, "Invalid green component")
         assert(blueHexColor >= 0 && blueHexColor <= 255, "Invalid blue component")
         self.init(red: redHexColor / 255.0 , green: greenHexColor / 255.0, blue: blueHexColor / 255.0, alpha: 1)
     }
     
-    convenience init(hexColor:Int) {
+    convenience init(hexColor:Int, alpha:CGFloat = 1.0) {
         self.init(redHexColor: CGFloat((hexColor >> 16) & 0xff),
                   greenHexColor: CGFloat((hexColor >> 8) & 0xff),
-                  blueHexColor:CGFloat(hexColor & 0xff))
+                  blueHexColor:CGFloat(hexColor & 0xff),
+                  alpha:alpha)
     }
 }

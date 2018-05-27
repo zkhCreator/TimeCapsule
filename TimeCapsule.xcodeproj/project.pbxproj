@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		ACE03F40A85C5F3D495DE456 /* Pods_TimeCapsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */; };
 		E804609B207617490009A83E /* UIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E804609A207617490009A83E /* UIExtension.swift */; };
+		E87ADFA120B9776A001152CC /* TCTagListContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA020B9776A001152CC /* TCTagListContainerView.swift */; };
+		E87ADFA320B97997001152CC /* TCTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA220B97997001152CC /* TCTagView.swift */; };
+		E87ADFA520B98200001152CC /* TCTimeListCreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA420B98200001152CC /* TCTimeListCreateContentView.swift */; };
 		E89414FD2070E14F00703341 /* TCCheckBoxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89414FC2070E14F00703341 /* TCCheckBoxButton.swift */; };
 		E896DF8720478E48004025F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E896DF8620478E48004025F4 /* AppDelegate.swift */; };
 		E896DF8C20478E48004025F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E896DF8A20478E48004025F4 /* Main.storyboard */; };
@@ -52,6 +55,9 @@
 		257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TimeCapsule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA388F0B4B11DFC214586FCF /* Pods-TimeCapsule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimeCapsule.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule.debug.xcconfig"; sourceTree = "<group>"; };
 		E804609A207617490009A83E /* UIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtension.swift; sourceTree = "<group>"; };
+		E87ADFA020B9776A001152CC /* TCTagListContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTagListContainerView.swift; sourceTree = "<group>"; };
+		E87ADFA220B97997001152CC /* TCTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTagView.swift; sourceTree = "<group>"; };
+		E87ADFA420B98200001152CC /* TCTimeListCreateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListCreateContentView.swift; sourceTree = "<group>"; };
 		E89414FC2070E14F00703341 /* TCCheckBoxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCCheckBoxButton.swift; sourceTree = "<group>"; };
 		E896DF8320478E48004025F4 /* TimeCapsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeCapsule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E896DF8620478E48004025F4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -258,6 +264,9 @@
 			children = (
 				E8C8694C20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift */,
 				E8C8698E20B444A90071AD7A /* TCTimeListCreateNewItemView.swift */,
+				E87ADFA020B9776A001152CC /* TCTagListContainerView.swift */,
+				E87ADFA220B97997001152CC /* TCTagView.swift */,
+				E87ADFA420B98200001152CC /* TCTimeListCreateContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -442,6 +451,7 @@
 			files = (
 				E8A94AED205405550091C300 /* TCEventView.swift in Sources */,
 				E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */,
+				E87ADFA320B97997001152CC /* TCTagView.swift in Sources */,
 				E8A94AE7205405550091C300 /* TCTimeListViewController.swift in Sources */,
 				E89414FD2070E14F00703341 /* TCCheckBoxButton.swift in Sources */,
 				E8A94AEE205405550091C300 /* extension.swift in Sources */,
@@ -452,7 +462,9 @@
 				E8A94AEF205405550091C300 /* TCBasicNavigationController.swift in Sources */,
 				E8C8698F20B444A90071AD7A /* TCTimeListCreateNewItemView.swift in Sources */,
 				E804609B207617490009A83E /* UIExtension.swift in Sources */,
+				E87ADFA120B9776A001152CC /* TCTagListContainerView.swift in Sources */,
 				E8A94AF32054083E0091C300 /* TCCalenderPickerView.swift in Sources */,
+				E87ADFA520B98200001152CC /* TCTimeListCreateContentView.swift in Sources */,
 				E8C8694D20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift in Sources */,
 				E8CF720F205951C9003FCCC2 /* TCClockPickerView.swift in Sources */,
 				E8CF7211205957E8003FCCC2 /* TCClockView.swift in Sources */,
