@@ -10,10 +10,10 @@ import UIKit
 
 class TCTimeListViewModels: NSObject {
     var viewModelArray:[TCViewModelItem] = []
+    let creatItem:TCViewModelItem = TCViewModelItem.init(with: .create)
     
     override init() {
         super.init()
-        let creatItem = TCViewModelItem.init(with: .create)
         viewModelArray.append(creatItem)
     }
     
@@ -29,10 +29,11 @@ class TCTimeListViewModels: NSObject {
     
     func updateAllData(with array:[TCViewModelItem]) {
         self.removeAll()
+        viewModelArray.append(creatItem)
         viewModelArray.append(contentsOf: array)
     }
     
-    func safeObject(with indexPath:NSIndexPath) -> TCViewModelItem? {
+    func safeObject(with indexPath:IndexPath) -> TCViewModelItem? {
         let index = indexPath.row
         return viewModelArray[safe: index]
     }

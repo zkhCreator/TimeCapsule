@@ -16,7 +16,7 @@ class TCTimeListViewController: TCBasicViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        self.view.addSubview(listView)
+        self.setListView()
     }
     
     func setListView() {
@@ -25,25 +25,27 @@ class TCTimeListViewController: TCBasicViewController {
         var listViewFrame = self.view.frame
         listViewFrame.origin.y +=  self.statusBarView.frame.height
         listViewFrame.size.height -= self.statusBarView.frame.height
+        listView.estimatedRowHeight = 70
         listView.frame = listViewFrame
-        listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: NSIndexPath(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
+        listView.tableHeaderView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0.0, height: CGFloat.leastNormalMagnitude)))
+        listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: IndexPath.init(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
+        self.view.addSubview(listView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
-//        listView.contentOffset = CGPoint(x: 0, y: -(headerView.frame.height));
     }
 }
 
 
 extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2;
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10;
+        return self.viewModel.count();
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,14 +56,10 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if <#condition#> {
-//            <#code#>
-//        }
-        return 60
+        guard let obj = viewModel.safeObject(with: indexPath) else {
+            return 0
+        }
+        
+        return obj.height
     }
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        self.headerView?.state = .idle
-//    }
-    
 }

@@ -19,6 +19,7 @@ class TCViewModelItem: NSObject {
     
     init(with type:TCTimeListCellType = .create, height:CGFloat = createItemHeight) {
         self.type = type
+        self.height = height
         super.init()
     }
     
