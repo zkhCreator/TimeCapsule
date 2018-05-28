@@ -18,7 +18,7 @@ enum TCTimeListStateType {
 class TCTimeListStateManager: NSObject {
     
     // 和滑动相关联
-    weak var tableview:UITableView?
+    let tableview:UITableView
     let TCTimeListContentOffset = "contentOffset"
     var state:TCTimeListStateType {
         get {
@@ -32,24 +32,10 @@ class TCTimeListStateManager: NSObject {
             
             self.currentState = newValue
             
-            if newValue == .idle && oldStatue == .createItem {
-                DispatchQueue.main.async {
-                    guard let currentTableview = self.tableview else {
-                        return
-                    }
-                    UIView.animate(withDuration: 0.3, animations: {
-                        currentTableview.contentOffset = CGPoint.init(x: createItemHeight, y: 0)
-                    });
-                }
-            }
-            
             if newValue == .createItem {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
-                        guard let currentTableview = self.tableview else {
-                            return ;
-                        }
-                        currentTableview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+                        self.tableview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
                     })
                     
                     guard let closure = self.showCreateItemClosure else {
@@ -76,13 +62,19 @@ class TCTimeListStateManager: NSObject {
     // 创建 item 分割线
     var createItemCriticalValue:CGFloat {
         get {
-            return (createItemHeight * 2)
+            return -(createItemHeight)
         }
     }
     
     init(with tableview:UITableView) {
         currentState = .idle
+        self.tableview = tableview
         super.init()
+        self.addObservers()
+    }
+    
+    deinit {
+        self.tableview.removeObserver(self, forKeyPath: TCTimeListContentOffset, context: nil);
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,14 +89,7 @@ class TCTimeListStateManager: NSObject {
     }
     
     func addObservers() {
-        if self.tableview == nil {
-            return
-        }
-        
-        guard let currentTableview = self.tableview else {
-            return ;
-        }
-        currentTableview.addObserver(self, forKeyPath: TCTimeListContentOffset, options: [.new, .old], context: nil)
+        self.tableview.addObserver(self, forKeyPath: TCTimeListContentOffset, options: [.new, .old], context: nil)
     }
 }
 
@@ -120,16 +105,12 @@ extension TCTimeListStateManager {
     /// - Parameter contentOffset: 偏移量
     func updateStatus(with contentOffset:CGPoint) {
         // 大于 0 的时候直接返回，不去更新对应的内容
-        if contentOffset.y > 0 {
-            return ;
-        }
-        
-        guard let currentTableview:UITableView = self.tableview else {
+        if contentOffset.y > createItemHeight {
             return ;
         }
         
         // 被拖动的时候
-        if currentTableview.isDragging {
+        if self.tableview.isDragging {
             self.updateDraggingStatus(with: contentOffset)
         } else {
             self.updateNoDraggingStatus(with: contentOffset)
@@ -143,22 +124,23 @@ extension TCTimeListStateManager {
     ///
     /// - Parameter contentOffst: 偏移量
     func updateDraggingStatus(with contentOffset:CGPoint) {
-        let absContentOffsetY = abs(contentOffset.y)
+        
+        let contentOffsetY = contentOffset.y
         // 变成归档的状态
-        if absContentOffsetY > createItemCriticalValue &&
+        if contentOffsetY < createItemCriticalValue &&
             self.state != .showArchive {
             self.state = .showArchive
         }
         
-        // 转变成新建的内容
-        if idleCriticalValue < absContentOffsetY &&
-            absContentOffsetY < createItemCriticalValue &&
+        // 转变成新建内容
+        if createItemCriticalValue < contentOffsetY &&
+            contentOffsetY < idleCriticalValue &&
             self.state != .willCreateItem {
             self.state = .willCreateItem
-            return ;
         }
         
-        if idleCriticalValue > absContentOffsetY && self.state != .idle {
+        if idleCriticalValue < contentOffsetY &&
+            self.state != .idle {
             self.state = .idle
         }
     }
