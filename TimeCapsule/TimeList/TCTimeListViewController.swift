@@ -14,9 +14,12 @@ class TCTimeListViewController: TCBasicViewController {
     let viewModel = TCTimeListViewModels()
     
     let stateManager:TCTimeListStateManager
+    let maskView = TCTimeListMaskView()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: IndexPath.init(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
         self.stateManager = TCTimeListStateManager.init(with: self.listView)
+        
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -28,6 +31,8 @@ class TCTimeListViewController: TCBasicViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         self.setListView()
+        self.setMaskView()
+        self.bindState()
     }
     
     func setListView() {
@@ -39,13 +44,24 @@ class TCTimeListViewController: TCBasicViewController {
         listView.estimatedRowHeight = 70
         listView.frame = listViewFrame
         listView.tableHeaderView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0.0, height: CGFloat.leastNormalMagnitude)))
-        listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: IndexPath.init(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
         self.view.addSubview(listView)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func setMaskView() {
+        maskView.frame = self.listView.frame
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(clickMaskView))
+        maskView.addGestureRecognizer(tap)
+        self.view.addSubview(maskView)
+    }
     
+    func bindState() {
+        self.stateManager.showCreateItemClosure = {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.maskView.alpha = 1
+                })
+            })
+        }
     }
 }
 
@@ -72,5 +88,16 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
         }
         
         return obj.height
+    }
+}
+
+// MARK: - All Click Action
+extension TCTimeListViewController {
+    @objc func clickMaskView() {
+        self.listView.isScrollEnabled = true
+        UIView.animate(withDuration: 0.3, animations: {
+            self.listView.setContentOffset(CGPoint.init(x: 0, y: createItemHeight), animated: false)
+            self.maskView.alpha = 0
+        })
     }
 }

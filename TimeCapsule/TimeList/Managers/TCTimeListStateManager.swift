@@ -20,6 +20,7 @@ class TCTimeListStateManager: NSObject {
     // 和滑动相关联
     let tableview:UITableView
     let TCTimeListContentOffset = "contentOffset"
+    var tableviewOriginalContentInset = UIEdgeInsets.zero
     var state:TCTimeListStateType {
         get {
             return self.currentState
@@ -30,22 +31,25 @@ class TCTimeListStateManager: NSObject {
                 return ;
             }
             
+            print(newValue)
+            
             self.currentState = newValue
             
             if newValue == .createItem {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.tableview.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+                    },  completion: { (finished) in
+                        if finished {
+                            self.tableview.isScrollEnabled = false
+                            guard let closure = self.showCreateItemClosure else {
+                                return ;
+                            }
+                            closure()
+                        }
                     })
-                    
-                    guard let closure = self.showCreateItemClosure else {
-                        return ;
-                    }
-                    
-                    closure()
                 }
             }
-            
         }
     }
     private var currentState:TCTimeListStateType
@@ -69,6 +73,7 @@ class TCTimeListStateManager: NSObject {
     init(with tableview:UITableView) {
         currentState = .idle
         self.tableview = tableview
+        tableviewOriginalContentInset = self.tableview.contentInset
         super.init()
         self.addObservers()
     }
