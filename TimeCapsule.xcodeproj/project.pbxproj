@@ -36,7 +36,7 @@
 		E8A94AF5205408940091C300 /* TCMonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94AF4205408940091C300 /* TCMonthPickerView.swift */; };
 		E8A94B1C205673300091C300 /* TCDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B1B205673300091C300 /* TCDatePickerView.swift */; };
 		E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A94B20205677000091C300 /* TCPickerDataTool.swift */; };
-		E8C8694D20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C8694C20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift */; };
+		E8C8694D20B1CD720071AD7A /* TCTimeListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C8694C20B1CD720071AD7A /* TCTimeListViewCell.swift */; };
 		E8C8698F20B444A90071AD7A /* TCTimeListStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C8698E20B444A90071AD7A /* TCTimeListStateManager.swift */; };
 		E8CF720F205951C9003FCCC2 /* TCClockPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CF720E205951C9003FCCC2 /* TCClockPickerView.swift */; };
 		E8CF7211205957E8003FCCC2 /* TCClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CF7210205957E8003FCCC2 /* TCClockView.swift */; };
@@ -90,7 +90,7 @@
 		E8A94AF4205408940091C300 /* TCMonthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCMonthPickerView.swift; sourceTree = "<group>"; };
 		E8A94B1B205673300091C300 /* TCDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDatePickerView.swift; sourceTree = "<group>"; };
 		E8A94B20205677000091C300 /* TCPickerDataTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerDataTool.swift; sourceTree = "<group>"; };
-		E8C8694C20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListViewCellTableViewCell.swift; sourceTree = "<group>"; };
+		E8C8694C20B1CD720071AD7A /* TCTimeListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListViewCell.swift; sourceTree = "<group>"; };
 		E8C8698E20B444A90071AD7A /* TCTimeListStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListStateManager.swift; sourceTree = "<group>"; };
 		E8CF720E205951C9003FCCC2 /* TCClockPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCClockPickerView.swift; sourceTree = "<group>"; };
 		E8CF7210205957E8003FCCC2 /* TCClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCClockView.swift; sourceTree = "<group>"; };
@@ -318,7 +318,7 @@
 		E8D4AC9A20BED3E40026C27A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E8C8694C20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift */,
+				E8C8694C20B1CD720071AD7A /* TCTimeListViewCell.swift */,
 				E87ADFC420BAE25E001152CC /* TCTimeListCreateNewItemCell.swift */,
 			);
 			path = Cells;
@@ -512,7 +512,7 @@
 				E8A94AF32054083E0091C300 /* TCCalenderPickerView.swift in Sources */,
 				E87ADFCF20BAF721001152CC /* TCViewModelItem.swift in Sources */,
 				E87ADFA520B98200001152CC /* TCTimeListCreateContentView.swift in Sources */,
-				E8C8694D20B1CD720071AD7A /* TCTimeListViewCellTableViewCell.swift in Sources */,
+				E8C8694D20B1CD720071AD7A /* TCTimeListViewCell.swift in Sources */,
 				E8CF720F205951C9003FCCC2 /* TCClockPickerView.swift in Sources */,
 				E8CF7211205957E8003FCCC2 /* TCClockView.swift in Sources */,
 				E8A94AF1205405550091C300 /* TCTimeAdapter.swift in Sources */,

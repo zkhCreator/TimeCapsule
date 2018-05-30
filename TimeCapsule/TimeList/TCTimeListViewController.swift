@@ -18,7 +18,7 @@ class TCTimeListViewController: TCBasicViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: IndexPath.init(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
-        listView.register(TCTimeListViewCellTableViewCell.self, forCellReuseIdentifier: String(describing: TCTimeListViewCellTableViewCell.self))
+        listView.register(TCTimeListViewCell.self, forCellReuseIdentifier: String(describing: TCTimeListViewCell.self))
         self.stateManager = TCTimeListStateManager.init(with: self.listView)
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -88,7 +88,7 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
             return self.createItemCell
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TCTimeListViewCellTableViewCell.self))!;
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TCTimeListViewCell.self))!;
         cell.selectionStyle = .none
         return cell
     }

@@ -17,6 +17,7 @@ class TCTimeListCreateNewItemCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.contentView.addSubview(createItemView)
+        self.backgroundColor = tcBackgroundColor
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -14,7 +14,7 @@ class TCTimeListMaskView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.init(hexColor: 0xffffff, alpha: 0.6)
+        self.backgroundColor = tcBackgroundColor
         self.alpha = 0
     }
     

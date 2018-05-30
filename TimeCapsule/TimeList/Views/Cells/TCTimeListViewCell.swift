@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TCTimeListViewCellTableViewCell: UITableViewCell {
+class TCTimeListViewCell: UITableViewCell {
     
     let marginX:CGFloat = 10
     let marginY:CGFloat = 8
@@ -39,8 +39,9 @@ class TCTimeListViewCellTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.backgroundColor = tcBackgroundColor
         self.setupView()
+//        self.addContainerViewGesture()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -88,5 +89,22 @@ class TCTimeListViewCellTableViewCell: UITableViewCell {
         
         
         self.gradientLayer.frame = self.containerView.bounds
+    }
+}
+
+
+// MARK: - UserAction
+extension TCTimeListViewCell{
+    //
+    func addContainerViewGesture() {
+//        let pan = Pain
+        let pan = UIPanGestureRecognizer.init(target: self, action: #selector(moveContainer(with:)))
+        self.containerView.addGestureRecognizer(pan)
+        self.containerView.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    func moveContainer(with gesture:UIPanGestureRecognizer) {
+        print(gesture)
     }
 }
