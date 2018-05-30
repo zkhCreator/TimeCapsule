@@ -31,8 +31,6 @@ class TCTimeListStateManager: NSObject {
                 return ;
             }
             
-            print(newValue)
-            
             self.currentState = newValue
             
             if newValue == .createItem {

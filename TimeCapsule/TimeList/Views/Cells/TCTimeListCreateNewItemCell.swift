@@ -8,14 +8,11 @@
 
 import UIKit
 
-class TCTimeLIstCreateNewItemCell: UITableViewCell {
+class TCTimeListCreateNewItemCell: UITableViewCell {
     
+    let offsetX:CGFloat = 20
+    let offsetY:CGFloat = 5
     let createItemView = TCTimeListCreateContentView()
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,13 +25,15 @@ class TCTimeLIstCreateNewItemCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        createItemView.frame = self.bounds
+        let createItemViewSize = CGSize.init(width: self.contentView.bounds.size.width - offsetX * 2,
+                                             height: self.contentView.bounds.size.height - offsetY * 2)
+        let createItemOrigin = CGPoint.init(x: offsetX, y: offsetY)
+        
+        createItemView.frame = CGRect.init(origin: createItemOrigin, size: createItemViewSize)
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func reset() {
+        self.createItemView.clear()
     }
 
 }

@@ -29,6 +29,6 @@ class TCTagView: UIView {
         self.gradientLayer = CAGradientLayer.init(startColor: fromColor, endColor: endColor, size: self.bounds.size)
         self.layer.addSublayer(gradientLayer!)
         self.layer.cornerRadius = self.frame.width > self.frame.height ? self.frame.width : self.frame.height
-        self.layer.borderColor = UIColor.init(hexColor: 0xf5f5f5).cgColor
+        self.layer.borderColor = UIColor.white.cgColor
     }
 }

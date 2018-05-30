@@ -15,6 +15,10 @@ class TCTimeListViewModels: NSObject {
     override init() {
         super.init()
         viewModelArray.append(creatItem)
+        for _ in 0..<10 {
+            let item = TCViewModelItem.init()
+            viewModelArray.append(item)
+        }
     }
     
     func count() -> Int {

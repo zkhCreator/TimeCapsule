@@ -9,8 +9,8 @@
 import UIKit
 
 class TCTimeListViewController: TCBasicViewController {
-    let listView = UITableView.init(frame: CGRect.zero, style: .grouped)
-    let createItemCell = TCTimeLIstCreateNewItemCell.init()
+    let listView = UITableView.init(frame: CGRect.zero, style: .plain)
+    let createItemCell = TCTimeListCreateNewItemCell.init()
     let viewModel = TCTimeListViewModels()
     
     let stateManager:TCTimeListStateManager
@@ -18,6 +18,7 @@ class TCTimeListViewController: TCBasicViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         listView.contentInset = UIEdgeInsetsMake(-(viewModel.safeObject(with: IndexPath.init(row: 0, section: 0))?.height ?? createItemHeight), 0, 0, 0);
+        listView.register(TCTimeListViewCellTableViewCell.self, forCellReuseIdentifier: String(describing: TCTimeListViewCellTableViewCell.self))
         self.stateManager = TCTimeListStateManager.init(with: self.listView)
         
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -29,7 +30,7 @@ class TCTimeListViewController: TCBasicViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = tcBackgroundColor
         self.setListView()
         self.setMaskView()
         self.bindState()
@@ -44,7 +45,14 @@ class TCTimeListViewController: TCBasicViewController {
         listView.estimatedRowHeight = 70
         listView.frame = listViewFrame
         listView.tableHeaderView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 0.0, height: CGFloat.leastNormalMagnitude)))
+        listView.backgroundColor = tcBackgroundColor
+        listView.separatorStyle = .none
+        listView.separatorColor = UIColor.clear
+        listView.showsVerticalScrollIndicator = false
+        listView.showsHorizontalScrollIndicator = false
         self.view.addSubview(listView)
+        
+        self.createItemCell.selectionStyle = .none
     }
     
     func setMaskView() {
@@ -79,7 +87,10 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
         if indexPath.row == 0 && indexPath.section == 0 {
             return self.createItemCell
         }
-        return UITableViewCell.init();
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TCTimeListViewCellTableViewCell.self))!;
+        cell.selectionStyle = .none
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -95,6 +106,7 @@ extension TCTimeListViewController : UITableViewDelegate, UITableViewDataSource 
 extension TCTimeListViewController {
     @objc func clickMaskView() {
         self.listView.isScrollEnabled = true
+        self.createItemCell.reset()
         UIView.animate(withDuration: 0.3, animations: {
             self.listView.setContentOffset(CGPoint.init(x: 0, y: createItemHeight), animated: false)
             self.maskView.alpha = 0

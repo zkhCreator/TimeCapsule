@@ -20,5 +20,7 @@ let toolButtonWH:CGFloat = 28.0
 let deepColor = UIColor.init(hexColor: 0x2695EC)
 let lightColor = UIColor.init(hexColor: 0x2DBEED)
 
+let tcBackgroundColor = UIColor.init(hexColor: 0xf5f5f5)
+
 
 let createItemHeight:CGFloat = 70

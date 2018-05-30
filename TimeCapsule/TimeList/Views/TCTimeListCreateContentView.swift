@@ -15,15 +15,19 @@ class TCTimeListCreateContentView: UIView {
     
     var editTimeTextField:UITextField = {
         let field = UITextField.init()
-        let attributePlaceHolder = NSAttributedString.init(string: "设置提醒", attributes: [NSAttributedStringKey.foregroundColor : UIColor.init(hexColor: 0xf5f5f5, alpha:0.6),NSAttributedStringKey.font : UIFont.systemFont(ofSize: 14)])
+        let attributePlaceHolder = NSAttributedString.init(string: "设置提醒", attributes: [NSAttributedStringKey.foregroundColor : UIColor.white.withAlphaComponent(0.6),NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)])
         field.attributedPlaceholder = attributePlaceHolder
+        field.textColor = UIColor.white
+        field.font = UIFont.systemFont(ofSize: 17)
         return field
     }()
     
     var thingTextField:UITextField = {
         let field = UITextField.init()
-        let attributePlaceHolder = NSAttributedString.init(string: "要做的事情", attributes: [NSAttributedStringKey.foregroundColor : UIColor.init(hexColor: 0xf5f5f5, alpha:0.6),NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)])
+        let attributePlaceHolder = NSAttributedString.init(string: "要做的事情", attributes: [NSAttributedStringKey.foregroundColor : UIColor.white.withAlphaComponent(0.6),NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 20)])
         field.attributedPlaceholder = attributePlaceHolder
+        field.textColor = UIColor.white
+        field.font = UIFont.boldSystemFont(ofSize: 20)
         return field
     }()
     
@@ -40,12 +44,13 @@ class TCTimeListCreateContentView: UIView {
         super.init(frame: frame)
         self.setupView()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
+        self.gradientLayer.cornerRadius = 8
         self.layer.addSublayer(self.gradientLayer)
         self.addSubview(tagContainer)
         self.addSubview(editTimeTextField)
@@ -70,5 +75,18 @@ class TCTimeListCreateContentView: UIView {
                                               size: self.tagContainer.frame.size)
         self.gradientLayer.frame = self.bounds
     }
-    
+}
+
+extension TCTimeListCreateContentView {
+    func clear() {
+        self.thingTextField.text = ""
+        self.editTimeTextField.text = ""
+        if self.thingTextField.canResignFirstResponder {
+            self.thingTextField.resignFirstResponder()
+        }
+        
+        if self.editTimeTextField.canResignFirstResponder {
+            self.editTimeTextField.resignFirstResponder()
+        }
+    }
 }
