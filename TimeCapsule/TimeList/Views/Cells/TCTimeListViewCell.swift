@@ -8,6 +8,7 @@
 
 import UIKit
 import MCSwipeTableViewCell
+import TapticEngine
 
 class TCTimeListViewCell:TCBasicListTableViewCell {
     
@@ -96,14 +97,42 @@ class TCTimeListViewCell:TCBasicListTableViewCell {
 
 // MARK: - UserAction 
 extension TCTimeListViewCell{
-    //
     func addContainerViewGesture() {
-        let view = UIView.init()
-        view.backgroundColor = UIColor.clear
+        
+        let willArchiveView = UIView.init()
+        willArchiveView.backgroundColor = UIColor.clear
+        
+        let didArchiveView = UIView.init()
+        didArchiveView.backgroundColor = UIColor.clear;
+        
+        let willDeleteView = UIView.init()
+        willDeleteView.backgroundColor = UIColor.red;
+        
+        let didDeleteView = UIView.init()
+        didDeleteView.backgroundColor = UIColor.clear;
+        
         self.defaultColor = tcBackgroundColor
-        self.setSwipeGestureWith(view, color: tcBackgroundColor, mode: .switch, state: .state1, completionBlock: nil);
-//        let pan = Pain
-//        self.setupView()
+        self.firstTrigger = 0.075;
+        
+        self.setSwipeGestureWith(willArchiveView, color: tcBackgroundColor, mode: .exit, state: .state1) { (cell, state, mode) in
+            print("will ArchiveView");
+        };
+        
+        self.stateChangedBlock1 = { (cell, oldState, newState, mode) in
+            TapticEngine.impact.feedback(.medium)
+        };
+        
+        self.setSwipeGestureWith(willDeleteView, color: tcBackgroundColor, mode: .exit, state: .state3) { (cell, state, mode) in
+            print("will Delete");
+        };
+        
+        self.stateChangedBlock3 = { (cell, oldState, newState, mode) in
+            TapticEngine.impact.feedback(.heavy)
+        };
+        
+        self.stateChangedBlock0 = { (cell, oldState, newState, mode) in
+            TapticEngine.impact.feedback(.light)
+        };
     }
     
     @objc

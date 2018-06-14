@@ -4,5 +4,6 @@ use_frameworks!
 
 target 'TimeCapsule' do
     pod 'SnapKit', '~> 4.0.0'
-    pod 'MCSwipeTableViewCell'
+    pod 'MCSwipeTableViewCell', :path => '../../Framework/MCSwipeTableViewCell/'
+    pod 'TapticEngine'
 end
