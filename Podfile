@@ -4,4 +4,5 @@ use_frameworks!
 
 target 'TimeCapsule' do
     pod 'SnapKit', '~> 4.0.0'
+    pod 'MCSwipeTableViewCell'
 end

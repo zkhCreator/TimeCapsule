@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		ACE03F40A85C5F3D495DE456 /* Pods_TimeCapsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */; };
 		E804609B207617490009A83E /* UIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E804609A207617490009A83E /* UIExtension.swift */; };
+		E85E1E2320C18A940058047A /* TCBasicListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85E1E2220C18A940058047A /* TCBasicListTableViewCell.swift */; };
 		E87ADFA120B9776A001152CC /* TCTagListContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA020B9776A001152CC /* TCTagListContainerView.swift */; };
 		E87ADFA320B97997001152CC /* TCTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA220B97997001152CC /* TCTagView.swift */; };
 		E87ADFA520B98200001152CC /* TCTimeListCreateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFA420B98200001152CC /* TCTimeListCreateContentView.swift */; };
@@ -59,6 +60,7 @@
 		257AC94959C47A4016865CA2 /* Pods_TimeCapsule.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TimeCapsule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA388F0B4B11DFC214586FCF /* Pods-TimeCapsule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TimeCapsule.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule.debug.xcconfig"; sourceTree = "<group>"; };
 		E804609A207617490009A83E /* UIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtension.swift; sourceTree = "<group>"; };
+		E85E1E2220C18A940058047A /* TCBasicListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCBasicListTableViewCell.swift; sourceTree = "<group>"; };
 		E87ADFA020B9776A001152CC /* TCTagListContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTagListContainerView.swift; sourceTree = "<group>"; };
 		E87ADFA220B97997001152CC /* TCTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTagView.swift; sourceTree = "<group>"; };
 		E87ADFA420B98200001152CC /* TCTimeListCreateContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTimeListCreateContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,23 @@
 				164E576BE0FDD676211F89F2 /* Pods-TimeCapsule.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		E85E1E2020C18A740058047A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E8A94AE4205405540091C300 /* TCBasicNavigationController.swift */,
+				E8A94AE5205405540091C300 /* TCBasicViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E85E1E2120C18A810058047A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E85E1E2220C18A940058047A /* TCBasicListTableViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E87ADFC620BAF12A001152CC /* Managers */ = {
@@ -266,10 +285,10 @@
 		E8A94AE2205405540091C300 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E85E1E2120C18A810058047A /* Views */,
+				E85E1E2020C18A740058047A /* ViewController */,
 				E8A94AD6205405540091C300 /* Models */,
 				E8A94AE3205405540091C300 /* extension.swift */,
-				E8A94AE4205405540091C300 /* TCBasicNavigationController.swift */,
-				E8A94AE5205405540091C300 /* TCBasicViewController.swift */,
 				E8CF72122059662C003FCCC2 /* Marco.swift */,
 				E804609A207617490009A83E /* UIExtension.swift */,
 			);
@@ -344,7 +363,6 @@
 				E896DF8020478E48004025F4 /* Frameworks */,
 				E896DF8120478E48004025F4 /* Resources */,
 				F5963C06E105046529B6B92A /* [CP] Embed Pods Frameworks */,
-				FFC5C6AC655CD497DA56DEED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -460,30 +478,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FFC5C6AC655CD497DA56DEED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TimeCapsule/Pods-TimeCapsule-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -494,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8A94AED205405550091C300 /* TCEventView.swift in Sources */,
+				E85E1E2320C18A940058047A /* TCBasicListTableViewCell.swift in Sources */,
 				E8A94B21205677010091C300 /* TCPickerDataTool.swift in Sources */,
 				E87ADFA320B97997001152CC /* TCTagView.swift in Sources */,
 				E8A94AE7205405550091C300 /* TCTimeListViewController.swift in Sources */,

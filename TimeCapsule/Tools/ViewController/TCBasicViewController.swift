@@ -14,7 +14,7 @@ class TCBasicViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        statusBarView.backgroundColor = UIColor.white
+        statusBarView.backgroundColor = tcBackgroundColor
         statusBarView.frame = UIApplication.shared.statusBarFrame
         statusBarView.layer.zPosition = 999
         self.view.addSubview(statusBarView);

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MCSwipeTableViewCell
 
-class TCTimeListViewCell: UITableViewCell {
+class TCTimeListViewCell:TCBasicListTableViewCell {
     
     let marginX:CGFloat = 10
     let marginY:CGFloat = 8
@@ -41,7 +42,7 @@ class TCTimeListViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = tcBackgroundColor
         self.setupView()
-//        self.addContainerViewGesture()
+        self.addContainerViewGesture()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -93,14 +94,15 @@ class TCTimeListViewCell: UITableViewCell {
 }
 
 
-// MARK: - UserAction
+// MARK: - UserAction 
 extension TCTimeListViewCell{
     //
     func addContainerViewGesture() {
+        let view = UIView.init()
+        view.backgroundColor = UIColor.clear
+        self.setSwipeGestureWith(view, color: tcBackgroundColor, mode: .switch, state: .state1, completionBlock: nil);
 //        let pan = Pain
-        let pan = UIPanGestureRecognizer.init(target: self, action: #selector(moveContainer(with:)))
-        self.containerView.addGestureRecognizer(pan)
-        self.containerView.isUserInteractionEnabled = true
+//        self.setupView()
     }
     
     @objc

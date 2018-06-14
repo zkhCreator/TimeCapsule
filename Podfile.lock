@@ -1,12 +1,20 @@
 PODS:
+  - MCSwipeTableViewCell (2.1.4)
   - SnapKit (4.0.0)
 
 DEPENDENCIES:
+  - MCSwipeTableViewCell
   - SnapKit (~> 4.0.0)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - MCSwipeTableViewCell
+    - SnapKit
+
 SPEC CHECKSUMS:
+  MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 67bd402bc93e4de88abc67972a754f686a43bee9
+PODFILE CHECKSUM: 1c00f272f837a7a6fa386603191fe23a18ee98c4
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
