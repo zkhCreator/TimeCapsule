@@ -54,7 +54,7 @@ class TCTimeListViewCell:TCBasicListTableViewCell {
         self.gradientLayer.cornerRadius = 8
         self.gradientLayer.shadowColor = UIColor.black.cgColor
         self.gradientLayer.shadowOpacity = 0.3
-        self.gradientLayer.shadowRadius = 4
+        self.gradientLayer.shadowRadius = 2
         self.gradientLayer.shadowOffset = CGSize.init(width: 0, height: 2)
         containerView.layer.addSublayer(self.gradientLayer)
         
@@ -100,6 +100,7 @@ extension TCTimeListViewCell{
     func addContainerViewGesture() {
         let view = UIView.init()
         view.backgroundColor = UIColor.clear
+        self.defaultColor = tcBackgroundColor
         self.setSwipeGestureWith(view, color: tcBackgroundColor, mode: .switch, state: .state1, completionBlock: nil);
 //        let pan = Pain
 //        self.setupView()
